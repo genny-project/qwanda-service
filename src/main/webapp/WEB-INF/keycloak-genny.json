@@ -1,0 +1,11 @@
+{
+  "realm": "genny",
+  "auth-server-url": "http://bouncer.outcome-hub.com/auth",
+  "ssl-required": "external",
+  "resource": "qwanda-service",
+  "credentials": {
+    "secret": "32040386-d7f7-4c7b-bdcd-831cdb6309b2"
+  },
+  "use-resource-role-mappings": true,
+  "policy-enforcer": {}
+}

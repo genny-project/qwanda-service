@@ -1,0 +1,719 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- ~ Copyright 2017 Red Hat, Inc. and/or its affiliates. ~ ~ Licensed under 
+	the Apache License version 2.0, available at http://www.apache.org/licenses/LICENSE-2.0 -->
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://maven.apache.org/POM/4.0.0"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+
+	<groupId>life.genny</groupId>
+	<artifactId>qwanda-service</artifactId>
+	<version>0.5</version>
+
+	<name>Qwanda Secured Keycloak Service</name>
+	<description>Qwanda Secured Keycloak Service</description>
+
+	<packaging>war</packaging>
+
+	<properties>
+		<qwanda.version>0.5.1</qwanda.version>
+
+		<version.wildfly-swarm>2017.7.0-SNAPSHOT</version.wildfly-swarm>
+
+		<maven.compiler.source>1.8</maven.compiler.source>
+		<maven.compiler.target>1.8</maven.compiler.target>
+
+		<version.h2>1.4.195</version.h2>
+		<version.postgresql>9.4.1207</version.postgresql>
+		<version.mysql>5.1.38</version.mysql>
+
+		<version.jodatime>2.7</version.jodatime>
+
+		<version.hibernate>5.2.10.Final</version.hibernate>
+		<version.hibernate-validator>5.4.0.Final</version.hibernate-validator>
+		<version.hibernate.envers>5.2.10.Final</version.hibernate.envers>
+		<version.hsqldb>2.3.4</version.hsqldb>
+		<version.h2db>1.4.193</version.h2db>
+		<jackson.version>2.6.3</jackson.version>
+
+		<joda-time-version>2.8</joda-time-version>
+		<jersey.version>2.13</jersey.version>
+		<project.http.version>1.19.0</project.http.version>
+		<project.oauth.version>1.19.0</project.oauth.version>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<version.jboss.bom>10.1.0.Final</version.jboss.bom>
+		<drools.version>6.4.0.Final</drools.version>
+		<jbpm.version>6.4.0.Final</jbpm.version>
+
+	</properties>
+	<repositories>
+		<repository>
+			<url>http://download.java.net/maven/2/</url>
+			<id>hibernate-support</id>
+			<layout>default</layout>
+			<name>Repository for Hibernate Support</name>
+		</repository>
+		<repository>
+			<id>JBoss repository</id>
+			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
+			<name>Repository for JBoss</name>
+		</repository>
+		<repository>
+			<id>java.net</id>
+			<url>https://maven.java.net/content/repositories/public/</url>
+		</repository>
+		<repository>
+			<id>Sonatype repository</id>
+			<url>https://oss.sonatype.org/content/repositories/releases/</url>
+		</repository>
+		<repository>
+			<id>life.genny</id>
+			<name>Genny Nexus</name>
+			<url>https://nexus.outcome-hub.com/nexus/content/repositories/life.genny</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+
+		<repository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</repository>
+		<repository>
+			<id>jboss-public-repository-group</id>
+			<name>JBoss Public Repository Group</name>
+			<url>http://repository.jboss.org/nexus/content/groups/public/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</repository>
+	</repositories>
+
+	<pluginRepositories>
+		<pluginRepository>
+			<id>sonatype-nexus-snapshots</id>
+			<name>Sonatype Nexus Snapshots</name>
+			<url>https://oss.sonatype.org/content/repositories/snapshots</url>
+			<releases>
+				<enabled>false</enabled>
+			</releases>
+			<snapshots>
+				<enabled>true</enabled>
+			</snapshots>
+		</pluginRepository>
+
+		<!-- needed until the latest version of gradle-maven-plugin is released 
+			to central: https://github.com/LendingClub/gradle-maven-plugin/issues/25 -->
+		<pluginRepository>
+			<id>spring</id>
+			<name>Spring releases</name>
+			<url>http://repo.spring.io/libs-release-remote/</url>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
+		</pluginRepository>
+	</pluginRepositories>
+
+
+	<dependencyManagement>
+		<dependencies>
+			<dependency>
+				<groupId>org.wildfly.bom</groupId>
+				<artifactId>wildfly-javaee7-with-tools</artifactId>
+				<version>${version.jboss.bom}</version>
+				<type>pom</type>
+				<scope>import</scope>
+			</dependency>
+		</dependencies>
+	</dependencyManagement>
+
+	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+				<includes>
+					<include>**/persistence.xml</include>
+				</includes>
+			</resource>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>false</filtering>
+				<excludes>
+					<exclude>**/persistence.xml</exclude>
+				</excludes>
+			</resource>
+		</resources>
+
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.wildfly.swarm</groupId>
+					<artifactId>wildfly-swarm-plugin</artifactId>
+					<version>${version.wildfly-swarm}</version>
+					<configuration>
+						<jvmArguments>
+							<jvmArgument>-Xmx128m</jvmArgument>
+						</jvmArguments>
+					</configuration>
+					<executions>
+						<execution>
+							<id>package</id>
+							<goals>
+								<goal>package</goal>
+							</goals>
+						</execution>
+					</executions>
+				</plugin>
+				<plugin>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>3.0.0</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-compiler-plugin</artifactId>
+					<version>3.5.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-failsafe-plugin</artifactId>
+					<version>2.19.1</version>
+				</plugin>
+				<plugin>
+					<artifactId>maven-surefire-plugin</artifactId>
+					<version>2.19.1</version>
+					<configuration>
+						<systemPropertyVariables>
+							<org.apache.maven.user-settings>${session.request.userSettingsFile.path}</org.apache.maven.user-settings>
+						</systemPropertyVariables>
+					</configuration>
+				</plugin>
+				<plugin>
+					<artifactId>maven-war-plugin</artifactId>
+					<version>2.6</version>
+					<configuration>
+						<failOnMissingWebXml>false</failOnMissingWebXml>
+					</configuration>
+				</plugin>
+				<plugin>
+					<groupId>org.codehaus.mojo</groupId>
+					<artifactId>build-helper-maven-plugin</artifactId>
+					<version>1.10</version>
+				</plugin>
+			</plugins>
+		</pluginManagement>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.wildfly.swarm</groupId>
+				<artifactId>wildfly-swarm-plugin</artifactId>
+				<configuration>
+					<mainClass>org.wildfly.swarm.examples.keycloak.Main</mainClass>
+					<bundleDependencies>true</bundleDependencies>
+					<properties>
+						<swarm.bind.address>0.0.0.0</swarm.bind.address>
+						<java.net.preferIPv4Stack>true</java.net.preferIPv4Stack>
+						<java.net.preferIPv6Stack>false</java.net.preferIPv6Stack>
+						<java.net.preferIPv4Addresses>true</java.net.preferIPv4Addresses>
+					</properties>
+				</configuration>
+				<executions>
+					<execution>
+						<id>package</id>
+					</execution>
+					<execution>
+						<id>start</id>
+					</execution>
+					<execution>
+						<id>stop</id>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>pl.project13.maven</groupId>
+				<artifactId>git-commit-id-plugin</artifactId>
+				<version>2.1.10</version>
+				<executions>
+					<execution>
+						<id>git-info</id>
+						<goals>
+							<goal>revision</goal>
+						</goals>
+						<configuration>
+							<generateGitPropertiesFile>true</generateGitPropertiesFile>
+							<generateGitPropertiesFilename>target/classes/git.properties</generateGitPropertiesFilename>
+							<!-- If you'd like to tell the plugin where your .git directory is, 
+								use this setting, otherwise we'll perform a search trying to figure out the 
+								right directory. It's better to add it explicite IMHO. -->
+							<dotGitDirectory>${project.basedir}/../.git</dotGitDirectory>
+
+							<!-- that's the default value, you don't have to set it -->
+							<prefix>git</prefix>
+
+							<!-- that's the default value -->
+							<dateFormat>dd.MM.yyyy '@' HH:mm:ss z</dateFormat>
+
+							<!-- @since 2.2.0 -->
+							<!-- If you want to set the timezone of the dateformat to anything 
+								in particular you can do this by using this option. As a general warning 
+								try to avoid three-letter time zone IDs because the same abbreviation are 
+								often used for multiple time zones. The default value we'll use the timezone 
+								use the timezone that's shipped with java (java.util.TimeZone.getDefault().getID()). 
+								*Note*: If you plan to set the java's timezone by using `MAVEN_OPTS=-Duser.timezone=UTC 
+								mvn clean package`, `mvn clean package -Duser.timezone=UTC` or any other 
+								configuration keep in mind that this option will override those settings 
+								and will not take other configurations into account! -->
+							<dateFormatTimeZone>${user.timezone}</dateFormatTimeZone>
+
+							<!-- false is default here, it prints some more information during 
+								the build -->
+							<verbose>false</verbose>
+
+							<!-- ALTERNATE SETUP - GENERATE FILE -->
+							<!-- If you want to keep git information, even in your WAR file etc, 
+								use this mode, which will generate a properties file (with filled out values) 
+								which you can then normally read using new Properties().load(/**/) -->
+
+							<!-- this is false by default, forces the plugin to generate the git.properties 
+								file -->
+							<generateGitPropertiesFile>true</generateGitPropertiesFile>
+							<!-- The path for the to be generated properties file, it's relative 
+								to ${project.basedir} -->
+							<generateGitPropertiesFilename>src/main/resources/git.properties</generateGitPropertiesFilename>
+
+							<!-- Denotes the format to save properties in. Valid options are "properties" 
+								(default) and "json". Properties will be saved to the generateGitPropertiesFilename 
+								if generateGitPropertiesFile is set to `true`. -->
+							<format>properties</format>
+
+							<!-- this is true by default; You may want to set this to false, if 
+								the plugin should run inside a <packaging>pom</packaging> project. Most projects 
+								won't need to override this property. For an use-case for this kind of behaviour 
+								see: https://github.com/ktoso/maven-git-commit-id-plugin/issues/21 -->
+							<skipPoms>true</skipPoms>
+
+							<!-- @since 2.1.4 -->
+							<!-- Tell maven-git-commit-id to inject the git properties into all 
+								reactor projects not just the current one. For details about why you might 
+								want to skip this, read this issue: https://github.com/ktoso/maven-git-commit-id-plugin/pull/65 
+								The property is set to ``false`` by default to prevent the overriding of 
+								properties that may be unrelated to the project. -->
+							<injectAllReactorProjects>false</injectAllReactorProjects>
+
+							<!-- @since 2.0.4 -->
+							<!-- true by default, controls whether the plugin will fail when no 
+								.git directory is found, when set to false the plugin will just skip execution -->
+							<failOnNoGitDirectory>true</failOnNoGitDirectory>
+
+							<!-- @since 2.1.5 -->
+							<!-- true by default, controls whether the plugin will fail if it 
+								was unable to obtain enough data for a complete run, if you don't care about 
+								this, you may want to set this value to false. -->
+							<failOnUnableToExtractRepoInfo>true</failOnUnableToExtractRepoInfo>
+
+							<!-- @since 2.1.8 -->
+							<!-- skip the plugin execution completely. This is useful for e.g. 
+								profile activated plugin invocations or to use properties to enable / disable 
+								pom features. Default value is 'false'. -->
+							<skip>false</skip>
+
+							<!-- @since 2.1.12 -->
+							<!-- Use with caution! In a multi-module build, only run once. This 
+								means that the plugins effects will only execute once, for the parent project. 
+								This probably won't "do the right thing" if your project has more than one 
+								git repository. Important: If you're using `generateGitPropertiesFile`, setting 
+								`runOnlyOnce` will make the plugin only generate the file in the directory 
+								where you started your build (!). The `git.*` maven properties are available 
+								in all modules. Default value is `false`. -->
+							<runOnlyOnce>false</runOnlyOnce>
+							<!-- @since 2.1.9 -->
+							<!-- Can be used to exclude certain properties from being emited into 
+								the resulting file. May be useful when you want to hide {@code git.remote.origin.url} 
+								(maybe because it contains your repo password?), or the email of the committer 
+								etc. Each value may be globbing, that is, you can write {@code git.commit.user.*} 
+								to exclude both, the {@code name}, as well as {@code email} properties from 
+								being emitted into the resulting files. Please note that the strings here 
+								are Java regexes ({@code .*} is globbing, not plain {@code *}). -->
+							<excludeProperties>
+								<!-- <excludeProperty>git.user.*</excludeProperty> -->
+							</excludeProperties>
+
+							<!-- @since 2.1.14 -->
+							<!-- Can be used to include only certain properties into the resulting 
+								file. Will be overruled by the exclude properties. Each value may be globbing, 
+								that is, you can write {@code git.commit.user.*} to include both, the {@code 
+								name}, as well as {@code email} properties into the resulting files. Please 
+								note that the strings here are Java regexes ({@code .*} is globbing, not 
+								plain {@code *}). -->
+							<includeOnlyProperties>
+								<!-- <includeOnlyProperty>^git.commit.id.full$</includeOnlyProperty> -->
+							</includeOnlyProperties>
+
+							<!-- @since 2.1.10 -->
+							<!-- false is default here, if set to true it uses native `git` excutable 
+								for extracting all data. This usually has better performance than the default 
+								(jgit) implemenation, but requires you to have git available as executable 
+								for the build as well as *might break unexpectedly* when you upgrade your 
+								system-wide git installation. As rule of thumb - stay on `jgit` (keep this 
+								`false`) until you notice performance problems. -->
+							<useNativeGit>false</useNativeGit>
+
+							<!-- @since v2.0.4 -->
+							<!-- Controls the length of the abbreviated git commit it (git.commit.id.abbrev) 
+								Defaults to `7`. `0` carries the special meaning. Maximum value is `40`, 
+								because of max SHA-1 length. -->
+							<abbrevLength>7</abbrevLength>
+
+							<!-- @since 2.1.0 -->
+							<!-- read up about git-describe on the in man, or it's homepage - 
+								it's a really powerful versioning helper and the recommended way to use git-commit-id-plugin. 
+								The configuration bellow is optional, by default describe will run "just 
+								like git-describe on the command line", even though it's a JGit reimplementation. -->
+							<gitDescribe>
+
+								<!-- don't generate the describe property -->
+								<skip>false</skip>
+
+
+								<!-- if no tag was found "near" this commit, just print the commit's 
+									id instead, helpful when you always expect this field to be not-empty -->
+								<always>false</always>
+								<!-- how many chars should be displayed as the commit object id? 
+									7 is git's default, 0 has a special meaning (see end of this README.md), 
+									and 40 is the maximum value here -->
+								<abbrev>7</abbrev>
+
+								<!-- when the build is triggered while the repo is in "dirty state", 
+									append this suffix -->
+								<dirty>-dirty</dirty>
+
+								<!-- Only consider tags matching the given pattern. This can be used 
+									to avoid leaking private tags from the repository. -->
+								<match>*</match>
+
+								<!-- always print using the "tag-commits_from_tag-g_commit_id-maybe_dirty" 
+									format, even if "on" a tag. The distance will always be 0 if you're "on" 
+									the tag. -->
+								<forceLongFormat>false</forceLongFormat>
+							</gitDescribe>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
+		</plugins>
+	</build>
+
+
+	<dependencies>
+		<dependency>
+			<groupId>life.genny</groupId>
+			<artifactId>qwanda</artifactId>
+			<version>${qwanda.version}</version>
+			<exclusions>
+				<exclusion>
+					<groupId>dom4j</groupId>
+					<artifactId>dom4j</artifactId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>jaxrs</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>keycloak</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>logging</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+		<dependency>
+			<groupId>joda-time</groupId>
+			<artifactId>joda-time</artifactId>
+			<version>${version.jodatime}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>swagger</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>swagger-webapp</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>undertow</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>cdi</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>jpa</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+ 		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>ejb</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.spec.javax.ws.rs</groupId>
+			<artifactId>jboss-jaxrs-api_2.0_spec</artifactId>
+			<version>1.0.0.Final</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.jboss.spec.javax.servlet</groupId>
+			<artifactId>jboss-servlet-api_3.1_spec</artifactId>
+			<version>1.0.0.Final</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>com.h2database</groupId>
+			<artifactId>h2</artifactId>
+			<version>1.4.187</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>${version.postgresql}</version>
+		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+			<version>${version.mysql}</version>
+
+
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>datasources</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api -->
+
+		
+  		<dependency>
+			<groupId>org.hibernate.javax.persistence</groupId>
+			<artifactId>hibernate-jpa-2.1-api</artifactId>
+			<exclusions>
+				<exclusion>
+					<groupId>dom4j</groupId>
+					<artifactId>dom4j</artifactId>
+				</exclusion>
+			</exclusions>
+ 			<scope>provided</scope> 
+		</dependency> 
+ 	<dependency>
+			<groupId>javax.enterprise</groupId>
+			<artifactId>cdi-api</artifactId>
+			<version>1.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.logging.log4j</groupId>
+			<artifactId>log4j-core</artifactId>
+			<version>2.8.2</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+			<version>20090211</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-json-jackson</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jersey.media</groupId>
+			<artifactId>jersey-media-moxy</artifactId>
+			<version>${jersey.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.datatype</groupId>
+			<artifactId>jackson-datatype-jsr310</artifactId>
+			<version>2.8.7
+			</version>
+
+		</dependency>
+		<!-- <dependency> <groupId>org.jboss.resteasy</groupId> <artifactId>resteasy-jaxrs</artifactId> 
+			<version>3.1.2.Final</version> </dependency> -->
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-core</artifactId>
+			<version>3.2.0.Final</version>
+		</dependency>
+
+		<!-- https://mvnrepository.com/artifact/org.keycloak/keycloak-admin-client -->
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-admin-client</artifactId>
+			<version>3.1.0.Final</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-client -->
+		<!-- <dependency> <groupId>org.jboss.resteasy</groupId> <artifactId>resteasy-client</artifactId> 
+			<version>3.1.2.Final</version> </dependency> -->
+		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
+		<dependency>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
+			<version>4.5.3</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.apache.commons/commons-lang3 -->
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>3.5</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>1.22.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-oauth2</artifactId>
+			<version>v2-rev75-1.19.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.http-client</groupId>
+			<artifactId>google-http-client-jackson2</artifactId>
+			<version>${project.http.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.oauth-client</groupId>
+			<artifactId>google-oauth-client-jetty</artifactId>
+			<version>${project.oauth.version}</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-sheets -->
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-sheets</artifactId>
+			<version>v4-rev473-1.22.0</version>
+		</dependency>
+		<!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-multipart-provider -->
+		<!-- <dependency> <groupId>org.jboss.resteasy</groupId> <artifactId>resteasy-multipart-provider</artifactId> 
+			<version>3.1.2.Final</version> </dependency> -->
+		<!-- https://mvnrepository.com/artifact/com.sun.jersey.contribs/jersey-multipart -->
+		<dependency>
+			<groupId>com.sun.jersey.contribs</groupId>
+			<artifactId>jersey-multipart</artifactId>
+			<version>1.19.3</version>
+		</dependency>
+		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>jaxrs-multipart</artifactId>
+			<version>${version.wildfly-swarm}</version>
+		</dependency>
+		<dependency>
+			<groupId>commons-io</groupId>
+			<artifactId>commons-io</artifactId>
+			<version>2.0.1</version>
+		</dependency>
+
+		<dependency>
+
+			<groupId>org.drools</groupId>
+
+			<artifactId>knowledge-api</artifactId>
+
+			<version>${drools.version}</version>
+
+		</dependency>
+
+		<dependency>
+			<groupId>org.drools</groupId>
+
+			<artifactId>drools-core</artifactId>
+
+			<version>${drools.version}</version>
+
+		</dependency>
+
+		<dependency>
+
+			<groupId>org.drools</groupId>
+
+			<artifactId>drools-compiler</artifactId>
+
+			<version>${drools.version}</version>
+
+		</dependency>
+
+		<dependency>
+
+			<groupId>org.jbpm</groupId>
+
+			<artifactId>jbpm-flow</artifactId>
+
+			<version>${jbpm.version}</version>
+
+		</dependency>
+
+		<dependency>
+
+			<groupId>org.jbpm</groupId>
+
+			<artifactId>jbpm-flow-builder</artifactId>
+
+			<version>${jbpm.version}</version>
+
+		</dependency>
+
+		<dependency>
+
+			<groupId>org.jbpm</groupId>
+
+			<artifactId>jbpm-bpmn2</artifactId>
+
+			<version>${jbpm.version}</version>
+
+		</dependency>
+		<dependency>
+			<groupId>org.drools</groupId>
+			<artifactId>drools-decisiontables</artifactId>
+			<version>${drools.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.kie</groupId>
+			<artifactId>kie-api</artifactId>
+			<version>${drools.version}</version>
+		</dependency>
+
+
+	</dependencies>
+
+</project>

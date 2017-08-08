@@ -1,0 +1,51 @@
+swarm:
+  deployment:
+    qwanda-keycloak.war:
+      web:
+        login-config:
+          auth-method: KEYCLOAK
+        security-constraints:
+          - url-pattern: /time/*
+            methods: [GET,POST]
+            roles: [admin]
+          - url-pattern: /qwanda/*
+            methods: [GET,POST,DELETE,PUT]
+            roles: [admin]
+          - url-pattern: /swagger-ui/*
+            roles: [admin]
+#  undertow:
+#    filter-configuration:
+#      response-headers:
+#        access-control-allow-origin:
+#          header-name: Access-Control-Allow-Origin
+#          header-value: http://localhost:3000
+#        access-control-allow-methods:
+#          header-name: Access-Control-Allow-Methods
+#          header-value: GET, POST, PUT, DELETE, OPTIONS
+#        access-control-max-age:
+#          header-name: Access-Control-Max-Age
+#          header-value: -1
+#        access-control-allow-headers:
+#          header-name: Access-Control-Allow-Headers
+#          header-value: Origin, X-Requested-With, Content-Type, Accept
+#    servers:
+#      default-server:
+#        hosts:
+#          default-host:
+#            filter-refs:
+#              access-control-allow-origin:
+#                priority: 1
+#              access-control-allow-methods:
+#                priority: 1
+#              access-control-max-age:
+#                priority: 1
+#              access-control-allow-headers:
+#                priority: 1
+#  datasources:
+#    data-sources:
+#      MyDS:
+#        driver-name: h2
+#        connection-url: jdbc:h2:mem:test;DB_CLOSE_DELAY=-1;DB_CLOSE_ON_EXIT=FALSE
+#        user-name: sa
+#        password: sa           
+ 
