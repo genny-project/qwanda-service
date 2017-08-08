@@ -144,6 +144,7 @@
 	</dependencyManagement>
 
 	<build>
+	<finalName>qwanda-service</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>

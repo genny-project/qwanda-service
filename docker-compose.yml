@@ -1,0 +1,71 @@
+version: '2'
+ 
+services:
+  mysql:
+    image: mysql
+    container_name: mysql-qwanda
+    environment:
+      MYSQL_ROOT_PASSWORD: "password"
+      MYSQL_USER: "genny"
+      MYSQL_PASSWORD: "password"
+      MYSQL_DATABASE: "gennydb"
+    volumes:
+      - mysql_data:/var/lib/mysql
+    restart: always
+    networks:
+      - qwanda_mysql_net
+    ports:
+      - 3310:3306 
+ 
+  qwanda-service:
+    depends_on:
+      - mysql
+#      - keycloak
+    image: outcomelife/qwanda-service:latest 
+    container_name: qwanda-service 
+    environment:
+      - KEYCLOAK_URL=http://keycloak:8080
+      - KEYCLOAK_REALM=wildfly-swarm-keycloak-example
+      - KEYCLOAK_USERNAME=user1
+      - KEYCLOAK_PASSWORD=password1
+      - KEYCLOAK_CLIENTID=curl
+      - CORS_ALLOWED_ORIGINS="http://localhost:3000,http://localhost:5000"
+      - KEYCLOAK_SECRET=6c61c6c3-aa68-419a-86e0-750a2517a3b0
+      - MYSQL_URL=mysql
+      - MYSQL_DB=gennydb
+      - MYSQL_PORT=3306
+      - MYSQL_USER=genny
+      - MYSQL_PASSWORD=password
+    ports:
+      - 8887:8787
+      - 8280:8080
+    links:
+      - mysql:mysql
+      - keycloak:keycloak
+    restart: always
+    networks:
+      - qwanda_mysql_net
+
+  keycloak:
+    image: outcomelife/keycloak:working 
+    container_name: keycloak 
+#    environment:
+#      - IMPORTEXPORT=EXPORT
+#      - KEYCLOAK_USER=admin
+#      - KEYCLOAK_PASSWORD=admin
+    volumes:
+      - ./realm:/tmp/realm 
+    networks:
+      - qwanda_mysql_net
+    ports:
+      - 8180:8080
+    command: -b 0.0.0.0  
+
+volumes:
+  mysql_data:
+ 
+networks:
+  qwanda_mysql_net:
+    driver: bridge
+
+
