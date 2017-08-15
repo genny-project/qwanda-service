@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Base64;
 import java.util.Base64.Decoder;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -337,6 +338,13 @@ public class BaseEntityService {
 			    .setParameter("baseEntityCode", baseEntityCode.toUpperCase())
 			    .getSingleResult();
 		
+		// Ugly, add field filtering through header field list
+		
+		List<EntityAttribute> attributes  = em.createQuery(
+			    "SELECT ea FROM EntityAttribute ea where ea.pk.baseEntity.code=:baseEntityCode")
+			    .setParameter("baseEntityCode", baseEntityCode)
+			    .getResultList();
+		result.setBaseEntityAttributes(new HashSet<EntityAttribute>(attributes));
 		return result;
 
 	}

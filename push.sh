@@ -7,6 +7,6 @@ else
 fi
 
 docker push gennyproject/qwanda-service:"${version}"
-docker tag -f gennyproject/qwanda-service:"${version}"  gennyproject/qwanda-service:latest
+docker tag  gennyproject/qwanda-service:"${version}"  gennyproject/qwanda-service:latest
 docker push gennyproject/qwanda-service:latest
 
