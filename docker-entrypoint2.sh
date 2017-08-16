@@ -1,7 +1,9 @@
 #!/bin/bash
-  KEYCLOAK_JSON_FILE=/opt/realm/keycloak.json
-  JAVA_OPT_KEYCLOAK_PATH=-Dswarm.keycloak.json.path=$KEYCLOAK_JSON_FILE
+KEYCLOAK_JSON_DIR=/realm
+KEYCLOAK_ORIGINAL_JSON_DIR=/opt/realm
 
+# copy all the keycloak files so they may be modified
+cp -rf ${KEYCLOAK_ORIGINAL_JSON_DIR}/* ${KEYCLOAK_JSON_DIR}/
 
 # change the package.json file
 function escape_slashes {
@@ -17,14 +19,13 @@ function change_line {
     /bin/sed -i  '/'"${OLD_LINE_PATTERN}"'/s/.*/'"${NEW}"'/' "${FILE}"
 }
 
-if [ -z "${KEYCLOAKURL}" ]; then
-   echo "No KEYCLOAKURL given. No change to keycloak.json"
-else
+
+for i in `ls ${KEYCLOAK_JSON_DIR}` ; do
+
    OLD_LINE_KEY="auth-server-url"
    NEW_LINE="\"auth-server-url\": \"${KEYCLOAKURL}/auth\","
    change_line "\${OLD_LINE_KEY}" "\${NEW_LINE}" "\${KEYCLOAK_JSON_FILE}"
-fi
-
+done
 
 #Set some ENV by extracting from keycloak.json file
 export KEYCLOAK_REALM=`jq '.realm' /opt/realm/keycloak.json`

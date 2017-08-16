@@ -56,9 +56,8 @@ public class Main {
                 driverModule = "com.h2database.h2";
         }
 
-        SwaggerArchive archive = ShrinkWrap.create(SwaggerArchive.class, "qwanda-keycloak.war");
+        SwaggerArchive archive = ShrinkWrap.create(SwaggerArchive.class, "qwanda-service.war");
         JAXRSArchive deployment = archive.as(JAXRSArchive.class).addPackage(Main.class.getPackage());
-        deployment.addResource(MyResource.class);
 //        deployment.addAsLibraries(arg0)
         deployment.addModule(driverModule);
 

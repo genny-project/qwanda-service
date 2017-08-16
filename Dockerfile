@@ -17,6 +17,7 @@ ADD target/qwanda-service-swarm.jar /opt/qwanda-service-swarm.jar
 #### HACK!!!
 RUN mkdir -p /opt/src/main/resources/META-INF
 ADD src/main/resources/META-INF/load.sql /opt/src/main/resources/META-INF/
+RUN mkdir /realm
 ADD realm /opt/realm
 ADD docker-entrypoint2.sh /opt/docker-entrypoint2.sh
 
