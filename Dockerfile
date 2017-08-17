@@ -1,16 +1,17 @@
-FROM openjdk:8u131-jre-alpine 
+FROM openjdk:9-slim 
+#FROM openjdk:8u141-slim 
 
-#RUN set -x \
-#    && apt-get update --quiet \
-#    && apt-get install --quiet --yes --no-install-recommends jq sed  iputils-ping vim  \
-#    && apt-get clean
+RUN set -x \
+    && apt-get update --quiet \
+    && apt-get install --quiet --yes --no-install-recommends jq sed  iputils-ping vim  \
+    && apt-get clean
 
-RUN apk update \
- && apk add jq \
- && apk add sed \
- && apk add vim \
- && apk add bash \
- && rm -rf /var/cache/apk/*
+#RUN apk update \
+# && apk add jq \
+# && apk add sed \
+# && apk add vim \
+# && apk add bash \
+# && rm -rf /var/cache/apk/*
 
 ADD target/qwanda-service-swarm.jar /opt/qwanda-service-swarm.jar
 

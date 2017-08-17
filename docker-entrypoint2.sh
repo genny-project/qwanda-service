@@ -1,7 +1,7 @@
 #!/bin/bash
 KEYCLOAK_JSON_DIR=/realm
 KEYCLOAK_ORIGINAL_JSON_DIR=/opt/realm
-
+KEYCLOAKURL=http://bouncer.outcome-hub.com
 # copy all the keycloak files so they may be modified
 cp -rf ${KEYCLOAK_ORIGINAL_JSON_DIR}/* ${KEYCLOAK_JSON_DIR}/
 
@@ -28,10 +28,10 @@ for i in `ls ${KEYCLOAK_JSON_DIR}` ; do
 done
 
 #Set some ENV by extracting from keycloak.json file
-export KEYCLOAK_REALM=`jq '.realm' /opt/realm/keycloak.json`
-export KEYCLOAK_URL=`jq '.["auth-server-url"]' /opt/realm/keycloak.json`
-export KEYCLOAK_CLIENTID=`jq '.resource' /opt/realm/keycloak.json`
-export KEYCLOAK_SECRET=`jq '.secret' /opt/realm/keycloak.json`
+export KEYCLOAK_REALM=`jq '.realm' /realm/keycloak.json`
+export KEYCLOAK_URL=`jq '.["auth-server-url"]' /realm/keycloak.json`
+export KEYCLOAK_CLIENTID=`jq '.resource' /realm/keycloak.json`
+export KEYCLOAK_SECRET=`jq '.secret' /realm/keycloak.json`
 
 echo "KEYCLOAK REALM= ${KEYCLOAK_REALM}"
 echo "KEYCLOAK URL= ${KEYCLOAK_URL}"
