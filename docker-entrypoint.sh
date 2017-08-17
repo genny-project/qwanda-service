@@ -1,7 +1,6 @@
 #!/bin/bash
 KEYCLOAK_JSON_DIR=/realm
 KEYCLOAK_ORIGINAL_JSON_DIR=/opt/realm
-KEYCLOAKURL=http://bouncer.outcome-hub.com
 # copy all the keycloak files so they may be modified
 cp -rf ${KEYCLOAK_ORIGINAL_JSON_DIR}/* ${KEYCLOAK_JSON_DIR}/
 
@@ -25,7 +24,12 @@ for i in `ls ${KEYCLOAK_JSON_DIR}` ; do
    OLD_LINE_KEY="auth-server-url"
    NEW_LINE="\"auth-server-url\": \"${KEYCLOAKURL}/auth\","
    change_line "\${OLD_LINE_KEY}" "\${NEW_LINE}" "\${KEYCLOAK_JSON_FILE}"
+
 done
+
+#hack
+/install-cert.sh '${SSL_URL}'
+
 
 #Set some ENV by extracting from keycloak.json file
 export KEYCLOAK_REALM=`jq '.realm' /realm/keycloak.json`

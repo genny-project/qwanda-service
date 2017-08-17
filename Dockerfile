@@ -3,7 +3,7 @@ FROM openjdk:9-slim
 
 RUN set -x \
     && apt-get update --quiet \
-    && apt-get install --quiet --yes --no-install-recommends jq sed  iputils-ping vim  \
+    && apt-get install --quiet --yes --no-install-recommends jq sed  iputils-ping vim sed \
     && apt-get clean
 
 #RUN apk update \
@@ -13,17 +13,18 @@ RUN set -x \
 # && apk add bash \
 # && rm -rf /var/cache/apk/*
 
-ADD target/qwanda-service-swarm.jar /opt/qwanda-service-swarm.jar
+ADD target/qwanda-service-swarm.jar /qwanda-service-swarm.jar
+ADD install-cert.sh /install-cert.sh
 
 #### HACK!!!
-RUN mkdir -p /opt/src/main/resources/META-INF
-ADD src/main/resources/META-INF/load.sql /opt/src/main/resources/META-INF/
+RUN mkdir -p /src/main/resources/META-INF
+ADD src/main/resources/META-INF/load.sql /src/main/resources/META-INF/
 RUN mkdir /realm
 ADD realm /opt/realm
-ADD docker-entrypoint2.sh /opt/docker-entrypoint2.sh
+ADD docker-entrypoint.sh /docker-entrypoint.sh
 
-WORKDIR /opt
+WORKDIR /
 
 EXPOSE 8080
-ENTRYPOINT [ "/opt/docker-entrypoint2.sh" ]
+ENTRYPOINT [ "/docker-entrypoint.sh" ]
 #ENTRYPOINT ["java","-agentlib:jdwp=transport=dt_socket,address=8787,server=y,suspend=y", "-jar", "qwanda-service-swarm.jar"]
