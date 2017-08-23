@@ -14,8 +14,9 @@ RUN set -x \
 # && rm -rf /var/cache/apk/*
 
 ADD target/qwanda-service-swarm.jar /qwanda-service-swarm.jar
-ADD install-cert.sh /install-cert.sh
-
+#ADD install-cert.sh /install-cert.sh
+ADD ssl.crt /ssl.crt
+RUN keytool -importcert -file ./ssl.crt -alias ssl -keystore /usr/lib/jvm/java-8-openjdk-amd64/jre/lib/security/cacerts -storepass changeit 
 #### HACK!!!
 RUN mkdir -p /src/main/resources/META-INF
 ADD src/main/resources/META-INF/load.sql /src/main/resources/META-INF/
