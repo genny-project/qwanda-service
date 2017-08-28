@@ -6,7 +6,7 @@ cp -rf ${KEYCLOAK_ORIGINAL_JSON_DIR}/* ${KEYCLOAK_JSON_DIR}/
 
 # change the package.json file
 function escape_slashes {
-    /bin/sed 's/\//\\\//g'
+    /usr/bin/sed 's/\//\\\//g'
 }
 
 function change_line {
@@ -15,20 +15,22 @@ function change_line {
   eval FILE="$3"
 
     local NEW=$(echo "${NEW_LINE}" | escape_slashes)
-    /bin/sed -i  '/'"${OLD_LINE_PATTERN}"'/s/.*/'"${NEW}"'/' "${FILE}"
+    /usr/bin/sed -i  '/'"${OLD_LINE_PATTERN}"'/s/.*/'"${NEW}"'/' "${FILE}"
 }
 
 
 for i in `ls ${KEYCLOAK_JSON_DIR}` ; do
-
+if grep -Fxq "localhost" \${KEYCLOAK_JSON_DIR}\/\${i} 
+then
    OLD_LINE_KEY="auth-server-url"
    NEW_LINE="\"auth-server-url\": \"${KEYCLOAKURL}/auth\","
-   change_line "\${OLD_LINE_KEY}" "\${NEW_LINE}" "\${KEYCLOAK_JSON_FILE}"
+   change_line "\${OLD_LINE_KEY}" "\${NEW_LINE}" "\${KEYCLOAK_JSON_DIR}\/\${i}"
+fi
 
 done
 
 #hack
-/install-cert.sh '${SSL_URL}'
+#/install-cert.sh '${SSL_URL}'
 
 
 #Set some ENV by extracting from keycloak.json file
