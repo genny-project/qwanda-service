@@ -2,17 +2,17 @@ swarm:
   deployment:
     qwanda-keycloak.war:
       web:
-        login-config:
-          auth-method: KEYCLOAK
-        security-constraints:
-          - url-pattern: /time/*
-            methods: [GET,POST]
-            roles: [admin]
-          - url-pattern: /qwanda/*
-            methods: [GET,POST,DELETE,PUT]
-            roles: [admin]
-          - url-pattern: /swagger-ui/*
-            roles: [admin]
+  #      login-config:
+  #        auth-method: KEYCLOAK
+  #      security-constraints:
+  #        - url-pattern: /time/*
+  #          methods: [GET,POST]
+  #          roles: [admin]
+  #        - url-pattern: /qwanda/*
+  #          methods: [GET,POST,DELETE,PUT]
+  #          roles: [admin]
+  #        - url-pattern: /swagger-ui/*
+  #          roles: [admin]
 #  undertow:
 #    filter-configuration:
 #      response-headers:

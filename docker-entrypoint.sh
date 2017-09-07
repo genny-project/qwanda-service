@@ -30,8 +30,6 @@ fi
 done
 
 #hack
-#/install-cert.sh '${SSL_URL}'
-
 
 #Set some ENV by extracting from keycloak.json file
 export KEYCLOAK_REALM=`jq '.realm' /realm/keycloak.json`
