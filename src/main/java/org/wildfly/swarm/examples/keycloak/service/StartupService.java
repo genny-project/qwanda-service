@@ -1,14 +1,12 @@
 package org.wildfly.swarm.examples.keycloak.service;
 
-import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.List;
-
 import javax.annotation.PostConstruct;
 import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.inject.Inject;
-
+import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.List;
 import life.genny.qwanda.Answer;
 import life.genny.qwanda.Ask;
 import life.genny.qwanda.Question;
@@ -38,19 +36,31 @@ public class StartupService {
 		try {
 			// create a users directory and a contacts directory
 			// and link these users to each
-			Group root = new Group("ROOT", "Root");
+		  
+		  // create a group attribute (This is because of a json/hibernate lazy issue)
+		  
+            final Attribute attributeImageUrl = new AttributeText(AttributeText.getDefaultCodePrefix() + "IMAGE_URL",
+              "Image Url");
+            service.insert(attributeImageUrl);
+
+		  
+			final Group root = new Group("ROOT", "Root");
+			root.addAttribute(attributeImageUrl, 1.0,"dir-ico");
 			service.insert(root);
 
-			Group contacts = new Group("CONTACTS", "Contacts");
+			final Group contacts = new Group("CONTACTS", "Contacts");
+            contacts.addAttribute(attributeImageUrl, 1.0,"dir-ico");
 			service.insert(contacts);
 
-			Group companys = new Group("COMPANYS", "Companies");
+			final Group companys = new Group("COMPANYS", "Companies");
+            companys.addAttribute(attributeImageUrl, 1.0,"dir-ico");
 			service.insert(companys);
 
-			Group users = new Group("USERS", "Users");
+			final Group users = new Group("USERS", "Users");
+            users.addAttribute(attributeImageUrl, 1.0,"dir-ico");
 			service.insert(users);
 
-			AttributeLink linkAttribute = new AttributeLink("LNK_CORE", "Parent");
+			final AttributeLink linkAttribute = new AttributeLink("LNK_CORE", "Parent");
 			service.insert(linkAttribute);
 
 			root.addTarget(contacts, linkAttribute, 1.0);
@@ -59,7 +69,7 @@ public class StartupService {
 			service.update(root);
 
 			// check if groups exist
-			List<Group> parentGroupList = new ArrayList<Group>();
+			final List<Group> parentGroupList = new ArrayList<Group>();
 			parentGroupList.add(contacts);
 			parentGroupList.add(users);
 
@@ -69,16 +79,16 @@ public class StartupService {
 			// System.out.println("Unable to load in Keycloak Users");
 			// }
 
-			Attribute attributeFirstname = new AttributeText(AttributeText.getDefaultCodePrefix() + "FIRSTNAME",
+			final Attribute attributeFirstname = new AttributeText(AttributeText.getDefaultCodePrefix() + "FIRSTNAME",
 					"Firstname");
-			Attribute attributeLastname = new AttributeText(AttributeText.getDefaultCodePrefix() + "LASTNAME",
+			final Attribute attributeLastname = new AttributeText(AttributeText.getDefaultCodePrefix() + "LASTNAME",
 					"Lastname");
 
 			// Attribute attributeFirstname = service.findAttributeByCode("PRI_FIRSTNAME");
 			// Attribute attributeLastname = service.findAttributeByCode("PRI_LASTNAME");
-			Attribute attributeBirthdate = new AttributeDateTime(AttributeText.getDefaultCodePrefix() + "BIRTHDATE",
+			final Attribute attributeBirthdate = new AttributeDateTime(AttributeText.getDefaultCodePrefix() + "BIRTHDATE",
 					"Date of Birth");
-			Attribute attributeKeycloakId = new AttributeText(AttributeText.getDefaultCodePrefix() + "KEYCLOAK_ID",
+			final Attribute attributeKeycloakId = new AttributeText(AttributeText.getDefaultCodePrefix() + "KEYCLOAK_ID",
 					"Keycloak ID");
 
 			service.insert(attributeFirstname);
@@ -86,7 +96,7 @@ public class StartupService {
 			service.insert(attributeBirthdate);
 			service.insert(attributeKeycloakId);
 
-			Person person = new Person(Person.getDefaultCodePrefix()+"USER1", "James Bond");
+			final Person person = new Person(Person.getDefaultCodePrefix()+"USER1", "James Bond");
 
 			person.addAttribute(attributeFirstname, 1.0,"Sean");
 			person.addAttribute(attributeLastname, 0.8,"Connery");
@@ -96,11 +106,11 @@ public class StartupService {
 			service.insert(person);
 
 			// create test questions
-			Question questionFirstname = new Question(Question.getDefaultCodePrefix() + "FIRSTNAME", "Firstname",
+			final Question questionFirstname = new Question(Question.getDefaultCodePrefix() + "FIRSTNAME", "Firstname",
 					attributeFirstname);
-			Question questionLastname = new Question(Question.getDefaultCodePrefix() + "LASTNAME", "Lastname",
+			final Question questionLastname = new Question(Question.getDefaultCodePrefix() + "LASTNAME", "Lastname",
 					attributeLastname);
-			Question questionBirthdate = new Question(Question.getDefaultCodePrefix() + "BIRTHDATE", "Birthdate",
+			final Question questionBirthdate = new Question(Question.getDefaultCodePrefix() + "BIRTHDATE", "Birthdate",
 					attributeBirthdate);
 
 			service.insert(questionFirstname);
@@ -109,17 +119,17 @@ public class StartupService {
 
 			// Now ask the question!
 
-			Ask askFirstname = new Ask(questionFirstname, person, person);
-			Ask askLastname = new Ask(questionLastname, person, person);
-			Ask askBirthdate = new Ask(questionBirthdate, person, person);
+			final Ask askFirstname = new Ask(questionFirstname, person, person);
+			final Ask askLastname = new Ask(questionLastname, person, person);
+			final Ask askBirthdate = new Ask(questionBirthdate, person, person);
 
 			service.insert(askFirstname);
 			service.insert(askLastname);
 			service.insert(askBirthdate);
 
-			Answer answerFirstname = new Answer(askFirstname, "Bob");
-			Answer answerLastname = new Answer(askLastname, "Console");
-			Answer answerBirthdate = new Answer(askBirthdate, "1989-01-07T16:00:00");
+			final Answer answerFirstname = new Answer(askFirstname, "Bob");
+			final Answer answerLastname = new Answer(askLastname, "Console");
+			final Answer answerBirthdate = new Answer(askBirthdate, "1989-01-07T16:00:00");
 
 			person.addAnswer(answerFirstname, 1.0);
 			person.addAnswer(answerLastname, 1.0);
@@ -135,13 +145,13 @@ public class StartupService {
 
 			service.update(person);
 
-			Question question = service.findQuestionByCode(Question.getDefaultCodePrefix() + "FIRSTNAME");
+			final Question question = service.findQuestionByCode(Question.getDefaultCodePrefix() + "FIRSTNAME");
 			System.out.println(question);
 
-			List<Ask> asks = service.findAsksByTargetBaseEntityId(person.getId());
+			final List<Ask> asks = service.findAsksByTargetBaseEntityId(person.getId());
 			System.out.println(asks);
 
-		} catch (BadDataException e) {
+		} catch (final BadDataException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
