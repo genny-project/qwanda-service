@@ -44,6 +44,9 @@
 		<version.jboss.bom>10.1.0.Final</version.jboss.bom>
 		<drools.version>6.4.0.Final</drools.version>
 		<jbpm.version>6.4.0.Final</jbpm.version>
+				<keycloak-core.version>3.2.1.Final</keycloak-core.version>
+		<keycloak-adapter-core.version>3.2.1.Final</keycloak-adapter-core.version>
+		
 
 	</properties>
 	<repositories>
@@ -574,14 +577,14 @@
 		<dependency>
 			<groupId>org.keycloak</groupId>
 			<artifactId>keycloak-core</artifactId>
-			<version>3.2.0.Final</version>
+			<version>${keycloak-core.version}</version>
 		</dependency>
 
 		<!-- https://mvnrepository.com/artifact/org.keycloak/keycloak-admin-client -->
 		<dependency>
 			<groupId>org.keycloak</groupId>
 			<artifactId>keycloak-admin-client</artifactId>
-			<version>3.1.0.Final</version>
+			<version>${keycloak-core.version}</version>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-client -->
 		<!-- <dependency> <groupId>org.jboss.resteasy</groupId> <artifactId>resteasy-client</artifactId> 
@@ -714,6 +717,23 @@
 			<version>${drools.version}</version>
 		</dependency>
 
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-adapter-core</artifactId>
+			<version>${keycloak-adapter-core.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-adapter-spi</artifactId>
+			<version>${keycloak-adapter-core.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-core</artifactId>
+			<version>${keycloak-core.version}</version>
+		</dependency>
 
 	</dependencies>
 
