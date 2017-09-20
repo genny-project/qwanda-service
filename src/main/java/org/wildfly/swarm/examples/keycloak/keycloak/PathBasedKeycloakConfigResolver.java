@@ -21,6 +21,7 @@ public class PathBasedKeycloakConfigResolver implements KeycloakConfigResolver {
     @Override
     public KeycloakDeployment resolve(final OIDCHttpFacade.Request request) {
         final String path = request.getURI();
+        System.out.println("Keycloak Deployment Path incoming request:"+path);
         final int multitenantIndex = path.indexOf("multitenant/");
         if (multitenantIndex == -1) {
             throw new IllegalStateException("Not able to resolve realm from the request path!");
