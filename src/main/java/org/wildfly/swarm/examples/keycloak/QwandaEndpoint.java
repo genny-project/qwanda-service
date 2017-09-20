@@ -384,9 +384,9 @@ public class QwandaEndpoint {
       @DefaultValue("LNK_CORE") @PathParam("linkCode") final String linkCode) {
     final List<BaseEntity> targets = service.findChildrenByAttributeLink(sourceCode, linkCode);
 
-
-    final QDataBaseEntityMessage msg =
-        new QDataBaseEntityMessage((BaseEntity[]) (targets.toArray()), sourceCode, linkCode);
+    BaseEntity[] beArr = new BaseEntity[targets.size()];
+    beArr = targets.toArray(beArr);
+    final QDataBaseEntityMessage msg = new QDataBaseEntityMessage(beArr, sourceCode, linkCode);
 
     return Response.status(200).entity(msg).build();
   }
