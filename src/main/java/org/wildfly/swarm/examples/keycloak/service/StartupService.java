@@ -67,6 +67,86 @@ public class StartupService {
 			root.addTarget(companys, linkAttribute, 0.8);
 			root.addTarget(users, linkAttribute, 0.2);
 			service.update(root);
+			
+//			contacts.addTarget(, linkAttribute, weight);
+			
+			final Group loads = new Group("LOADS", "Loads");
+            loads.addAttribute(attributeImageUrl, 1.0,"dir-ico");
+			service.insert(loads);
+			root.addTarget(loads, linkAttribute, 0.2);
+			service.update(root);
+			
+			//Adding Loads
+			final Group viewLoads = new Group("VIEW_LOADS", "View-Loads");
+			viewLoads.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(viewLoads);
+			
+			final Group postLoads = new Group("POST_LOADS", "Post-Loads");
+			postLoads.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(postLoads);
+			
+			loads.addTarget(viewLoads, linkAttribute, 1.0);
+			loads.addTarget(postLoads, linkAttribute, 1.0);
+			service.update(loads);
+			
+			//Adding Users
+			final Group admin = new Group("ADMIN", "Admin");
+			admin.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(admin);
+			
+			final Group driver = new Group("DRIVER", "Pacific-Driver");
+			driver.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(driver);
+			
+			final Group loadOwner = new Group("LOAD_OWNER", "Load-Owner");
+			loadOwner.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(loadOwner);
+			
+			users.addTarget(admin, linkAttribute, 1.0);
+			users.addTarget(driver, linkAttribute, 1.0);
+			users.addTarget(loadOwner, linkAttribute, 1.0);
+			service.update(users);
+			
+			//Adding Contacts
+			final Group phone = new Group("PHONE", "Phone");
+			phone.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(phone);
+			
+			final Group email = new Group("EMAIL", "Email");
+			email.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(email);
+			
+			contacts.addTarget(phone, linkAttribute, 1.0);
+			contacts.addTarget(email, linkAttribute, 1.0);
+			service.update(contacts);
+			
+			//Adding Transport Company
+			final Group aurizon = new Group("AURIZON", "Aurizon");
+			aurizon.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(aurizon);
+			
+			final Group pacificNational = new Group("PACIFIC_NATIONAL", "Pacific-National");
+			pacificNational.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(pacificNational);
+			
+			final Group linFox = new Group("LINFOX", "linfox");
+			linFox.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(linFox);
+			
+			final Group sctLogistics = new Group("SCT_LOGISTICS", "SCT-Logistics");
+			sctLogistics.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(sctLogistics);
+			
+			final Group glenGroup = new Group("GLEN_CAMERON_GROUP", "Glen-Cameron-Group");
+			glenGroup.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(glenGroup);
+			
+			companys.addTarget(aurizon, linkAttribute, 1.0);
+			companys.addTarget(pacificNational, linkAttribute, 1.0);
+			companys.addTarget(linFox, linkAttribute, 1.0);
+			companys.addTarget(sctLogistics, linkAttribute, 1.0);
+			companys.addTarget(glenGroup, linkAttribute, 1.0);
+			service.update(companys);
 
 			// check if groups exist
 			final List<Group> parentGroupList = new ArrayList<Group>();
