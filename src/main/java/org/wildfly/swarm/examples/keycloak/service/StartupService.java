@@ -122,6 +122,40 @@ public class StartupService {
 			
 //			contacts.addTarget(, linkAttribute, weight);
 			
+			//Adding Settings items
+			final Group yourDetils = new Group("YOUR_DETAILS", "Your-Details");
+			yourDetils.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(yourDetils);
+			
+			final Group loadTypes = new Group("LOAD_TYPES", "Load-Types");
+			loadTypes.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(loadTypes);
+			
+			final Group truckSpec = new Group("TRUCK_SPECIFICATION", "Truck-Specification");
+			truckSpec.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(truckSpec);
+			
+			final Group documents = new Group("Documents", "Dcouments");
+			documents.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(documents);
+			
+			final Group updatePwd = new Group("UPDATE_PASSWORD", "Update-Password");
+			updatePwd.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(updatePwd);
+			
+			final Group paymentDetails = new Group("PAYMENT_DETAILS", "Payment-Details");
+			paymentDetails.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(paymentDetails);
+			
+			settings.addTarget(yourDetils, linkAttribute, 1.0);
+			settings.addTarget(loadTypes, linkAttribute, 1.0);
+			settings.addTarget(truckSpec, linkAttribute, 1.0);
+			settings.addTarget(documents, linkAttribute, 1.0);
+			settings.addTarget(updatePwd, linkAttribute, 1.0);
+			settings.addTarget(paymentDetails, linkAttribute, 1.0);
+			service.update(settings);
+
+			
 			//Adding Loads child item
 			final Group viewLoads = new Group("VIEW_LOADS", "View-Loads");
 			viewLoads.addAttribute(attributeImageUrl, 1.0, "dir-ico");
