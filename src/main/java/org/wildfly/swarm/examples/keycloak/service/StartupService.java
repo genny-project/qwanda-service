@@ -47,6 +47,15 @@ public class StartupService {
 			final Group root = new Group("ROOT", "Root");
 			root.addAttribute(attributeImageUrl, 1.0,"dir-ico");
 			service.insert(root);
+			
+			final Group liveView = new Group("LIVE_VIEW", "Live-View");
+			root.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(liveView);
+			
+			final Group loads = new Group("LOADS", "Loads");
+            loads.addAttribute(attributeImageUrl, 1.0,"dir-ico");
+			service.insert(loads);
+			
 
 			final Group contacts = new Group("CONTACTS", "Contacts");
             contacts.addAttribute(attributeImageUrl, 1.0,"dir-ico");
@@ -59,24 +68,61 @@ public class StartupService {
 			final Group users = new Group("USERS", "Users");
             users.addAttribute(attributeImageUrl, 1.0,"dir-ico");
 			service.insert(users);
+			
+			final Group settings = new Group("SETTINGS", "Settings");
+			settings.addAttribute(attributeImageUrl, 1.0,"dir-ico");
+		    service.insert(settings);
+			
+			
 
 			final AttributeLink linkAttribute = new AttributeLink("LNK_CORE", "Parent");
 			service.insert(linkAttribute);
 
+			root.addTarget(liveView, linkAttribute, 1.0);
+			root.addTarget(loads, linkAttribute, 0.2);
 			root.addTarget(contacts, linkAttribute, 1.0);
 			root.addTarget(companys, linkAttribute, 0.8);
 			root.addTarget(users, linkAttribute, 0.2);
+			root.addTarget(settings, linkAttribute, 0.2);
 			service.update(root);
+			
+			
+			//Adding Live View Child items
+			final Group pending = new Group("PENDING", "Pending");
+			pending.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(pending);
+			
+			final Group accepted = new Group("ACCEPTED", "Accepted");
+			accepted.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(accepted);
+			
+			final Group dispatched = new Group("DISPATCHED", "Dispatched");
+			dispatched.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(dispatched);
+			
+			final Group intransit = new Group("IN-TRANSIT", "In-Transit");
+			intransit.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(intransit);
+			
+			final Group atdestination = new Group("AT-DESTINATION", "At-Destination");
+			atdestination.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(atdestination);
+			
+			final Group delivered = new Group("DELIVERED", "Delivered");
+			delivered.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+			service.insert(delivered);
+			
+			liveView.addTarget(pending, linkAttribute, 1.0);
+			liveView.addTarget(accepted, linkAttribute, 1.0);
+			liveView.addTarget(dispatched, linkAttribute, 1.0);
+			liveView.addTarget(intransit, linkAttribute, 1.0);
+			liveView.addTarget(atdestination, linkAttribute, 1.0);
+			liveView.addTarget(delivered, linkAttribute, 1.0);
+			service.update(liveView);
 			
 //			contacts.addTarget(, linkAttribute, weight);
 			
-			final Group loads = new Group("LOADS", "Loads");
-            loads.addAttribute(attributeImageUrl, 1.0,"dir-ico");
-			service.insert(loads);
-			root.addTarget(loads, linkAttribute, 0.2);
-			service.update(root);
-			
-			//Adding Loads
+			//Adding Loads child item
 			final Group viewLoads = new Group("VIEW_LOADS", "View-Loads");
 			viewLoads.addAttribute(attributeImageUrl, 1.0, "dir-ico");
 			service.insert(viewLoads);
@@ -89,7 +135,7 @@ public class StartupService {
 			loads.addTarget(postLoads, linkAttribute, 1.0);
 			service.update(loads);
 			
-			//Adding Users
+			//Adding Users child item
 			final Group admin = new Group("ADMIN", "Admin");
 			admin.addAttribute(attributeImageUrl, 1.0, "dir-ico");
 			service.insert(admin);
@@ -107,7 +153,7 @@ public class StartupService {
 			users.addTarget(loadOwner, linkAttribute, 1.0);
 			service.update(users);
 			
-			//Adding Contacts
+			//Adding Contacts child item
 			final Group phone = new Group("PHONE", "Phone");
 			phone.addAttribute(attributeImageUrl, 1.0, "dir-ico");
 			service.insert(phone);
@@ -120,7 +166,7 @@ public class StartupService {
 			contacts.addTarget(email, linkAttribute, 1.0);
 			service.update(contacts);
 			
-			//Adding Transport Company
+			//Adding Transport Company child item
 			final Group aurizon = new Group("AURIZON", "Aurizon");
 			aurizon.addAttribute(attributeImageUrl, 1.0, "dir-ico");
 			service.insert(aurizon);
