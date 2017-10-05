@@ -28,294 +28,319 @@ import life.genny.qwanda.exception.BadDataException;
 @Startup
 public class StartupService {
 
-	@Inject
-	private BaseEntityService service;
+  @Inject
+  private BaseEntityService service;
 
-	@PostConstruct
-	public void init() {
-		try {
-			// create a users directory and a contacts directory
-			// and link these users to each
-		  
-		  // create a group attribute (This is because of a json/hibernate lazy issue)
-		  
-            final Attribute attributeImageUrl = new AttributeText(AttributeText.getDefaultCodePrefix() + "IMAGE_URL",
-              "Image Url");
-            service.insert(attributeImageUrl);
+  @PostConstruct
+  public void init() {
+    try {
+      // create a users directory and a contacts directory
+      // and link these users to each
 
-		  
-			final Group root = new Group("ROOT", "Root");
-			root.addAttribute(attributeImageUrl, 1.0,"dir-ico");
-			service.insert(root);
-			
-			final Group liveView = new Group("LIVE_VIEW", "Live-View");
-			root.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(liveView);
-			
-			final Group loads = new Group("LOADS", "Loads");
-            loads.addAttribute(attributeImageUrl, 1.0,"dir-ico");
-			service.insert(loads);
-			
+      // create a group attribute (This is because of a json/hibernate lazy issue)
 
-			final Group contacts = new Group("CONTACTS", "Contacts");
-            contacts.addAttribute(attributeImageUrl, 1.0,"dir-ico");
-			service.insert(contacts);
+      final Attribute attributeImageUrl =
+          new AttributeText(AttributeText.getDefaultCodePrefix() + "IMAGE_URL", "Image Url");
+      service.insert(attributeImageUrl);
 
-			final Group companys = new Group("COMPANYS", "Companies");
-            companys.addAttribute(attributeImageUrl, 1.0,"dir-ico");
-			service.insert(companys);
 
-			final Group users = new Group("USERS", "Users");
-            users.addAttribute(attributeImageUrl, 1.0,"dir-ico");
-			service.insert(users);
-			
-			final Group settings = new Group("SETTINGS", "Settings");
-			settings.addAttribute(attributeImageUrl, 1.0,"dir-ico");
-		    service.insert(settings);
-			
-			
+      final Group root = new Group("ROOT", "Root");
+      root.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(root);
 
-			final AttributeLink linkAttribute = new AttributeLink("LNK_CORE", "Parent");
-			service.insert(linkAttribute);
+      final Group dashboard = new Group("DASHBOARD", "Dashboard");
+      dashboard.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(dashboard);
 
-			root.addTarget(liveView, linkAttribute, 1.0);
-			root.addTarget(loads, linkAttribute, 0.2);
-			root.addTarget(contacts, linkAttribute, 1.0);
-			root.addTarget(companys, linkAttribute, 0.8);
-			root.addTarget(users, linkAttribute, 0.2);
-			root.addTarget(settings, linkAttribute, 0.2);
-			service.update(root);
-			
-			
-			//Adding Live View Child items
-			final Group pending = new Group("PENDING", "Pending");
-			pending.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(pending);
-			
-			final Group accepted = new Group("ACCEPTED", "Accepted");
-			accepted.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(accepted);
-			
-			final Group dispatched = new Group("DISPATCHED", "Dispatched");
-			dispatched.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(dispatched);
-			
-			final Group intransit = new Group("IN-TRANSIT", "In-Transit");
-			intransit.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(intransit);
-			
-			final Group atdestination = new Group("AT-DESTINATION", "At-Destination");
-			atdestination.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(atdestination);
-			
-			final Group delivered = new Group("DELIVERED", "Delivered");
-			delivered.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(delivered);
-			
-			liveView.addTarget(pending, linkAttribute, 1.0);
-			liveView.addTarget(accepted, linkAttribute, 1.0);
-			liveView.addTarget(dispatched, linkAttribute, 1.0);
-			liveView.addTarget(intransit, linkAttribute, 1.0);
-			liveView.addTarget(atdestination, linkAttribute, 1.0);
-			liveView.addTarget(delivered, linkAttribute, 1.0);
-			service.update(liveView);
-			
-//			contacts.addTarget(, linkAttribute, weight);
-			
-			//Adding Settings items
-			final Group yourDetils = new Group("YOUR_DETAILS", "Your-Details");
-			yourDetils.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(yourDetils);
-			
-			final Group loadTypes = new Group("LOAD_TYPES", "Load-Types");
-			loadTypes.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(loadTypes);
-			
-			final Group truckSpec = new Group("TRUCK_SPECIFICATION", "Truck-Specification");
-			truckSpec.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(truckSpec);
-			
-			final Group documents = new Group("Documents", "Dcouments");
-			documents.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(documents);
-			
-			final Group updatePwd = new Group("UPDATE_PASSWORD", "Update-Password");
-			updatePwd.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(updatePwd);
-			
-			final Group paymentDetails = new Group("PAYMENT_DETAILS", "Payment-Details");
-			paymentDetails.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(paymentDetails);
-			
-			settings.addTarget(yourDetils, linkAttribute, 1.0);
-			settings.addTarget(loadTypes, linkAttribute, 1.0);
-			settings.addTarget(truckSpec, linkAttribute, 1.0);
-			settings.addTarget(documents, linkAttribute, 1.0);
-			settings.addTarget(updatePwd, linkAttribute, 1.0);
-			settings.addTarget(paymentDetails, linkAttribute, 1.0);
-			service.update(settings);
+      final Group driverView = new Group("DRIVER_VIEW", "Driver View");
+      driverView.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(driverView);
 
-			
-			//Adding Loads child item
-			final Group viewLoads = new Group("VIEW_LOADS", "View-Loads");
-			viewLoads.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(viewLoads);
-			
-			final Group postLoads = new Group("POST_LOADS", "Post-Loads");
-			postLoads.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(postLoads);
-			
-			loads.addTarget(viewLoads, linkAttribute, 1.0);
-			loads.addTarget(postLoads, linkAttribute, 1.0);
-			service.update(loads);
-			
-			//Adding Users child item
-			final Group admin = new Group("ADMIN", "Admin");
-			admin.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(admin);
-			
-			final Group driver = new Group("DRIVER", "Pacific-Driver");
-			driver.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(driver);
-			
-			final Group loadOwner = new Group("LOAD_OWNER", "Load-Owner");
-			loadOwner.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(loadOwner);
-			
-			users.addTarget(admin, linkAttribute, 1.0);
-			users.addTarget(driver, linkAttribute, 1.0);
-			users.addTarget(loadOwner, linkAttribute, 1.0);
-			service.update(users);
-			
-			//Adding Contacts child item
-			final Group phone = new Group("PHONE", "Phone");
-			phone.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(phone);
-			
-			final Group email = new Group("EMAIL", "Email");
-			email.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(email);
-			
-			contacts.addTarget(phone, linkAttribute, 1.0);
-			contacts.addTarget(email, linkAttribute, 1.0);
-			service.update(contacts);
-			
-			//Adding Transport Company child item
-			final Group aurizon = new Group("AURIZON", "Aurizon");
-			aurizon.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(aurizon);
-			
-			final Group pacificNational = new Group("PACIFIC_NATIONAL", "Pacific-National");
-			pacificNational.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(pacificNational);
-			
-			final Group linFox = new Group("LINFOX", "linfox");
-			linFox.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(linFox);
-			
-			final Group sctLogistics = new Group("SCT_LOGISTICS", "SCT-Logistics");
-			sctLogistics.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(sctLogistics);
-			
-			final Group glenGroup = new Group("GLEN_CAMERON_GROUP", "Glen-Cameron-Group");
-			glenGroup.addAttribute(attributeImageUrl, 1.0, "dir-ico");
-			service.insert(glenGroup);
-			
-			companys.addTarget(aurizon, linkAttribute, 1.0);
-			companys.addTarget(pacificNational, linkAttribute, 1.0);
-			companys.addTarget(linFox, linkAttribute, 1.0);
-			companys.addTarget(sctLogistics, linkAttribute, 1.0);
-			companys.addTarget(glenGroup, linkAttribute, 1.0);
-			service.update(companys);
+      final Group ownerView = new Group("OWNER_VIEW", "Owner View");
+      ownerView.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(ownerView);
 
-			// check if groups exist
-			final List<Group> parentGroupList = new ArrayList<Group>();
-			parentGroupList.add(contacts);
-			parentGroupList.add(users);
+      final Group loads = new Group("LOADS", "Loads");
+      loads.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(loads);
 
-			// try {
-			// service.importKeycloakUsers(parentGroupList, linkAttribute);
-			// } catch (Exception e) {
-			// System.out.println("Unable to load in Keycloak Users");
-			// }
 
-			final Attribute attributeFirstname = new AttributeText(AttributeText.getDefaultCodePrefix() + "FIRSTNAME",
-					"Firstname");
-			final Attribute attributeLastname = new AttributeText(AttributeText.getDefaultCodePrefix() + "LASTNAME",
-					"Lastname");
+      final Group contacts = new Group("CONTACTS", "Contacts");
+      contacts.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(contacts);
 
-			// Attribute attributeFirstname = service.findAttributeByCode("PRI_FIRSTNAME");
-			// Attribute attributeLastname = service.findAttributeByCode("PRI_LASTNAME");
-			final Attribute attributeBirthdate = new AttributeDateTime(AttributeText.getDefaultCodePrefix() + "BIRTHDATE",
-					"Date of Birth");
-			final Attribute attributeKeycloakId = new AttributeText(AttributeText.getDefaultCodePrefix() + "KEYCLOAK_ID",
-					"Keycloak ID");
+      final Group people = new Group("PEOPLE", "People");
+      people.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(people);
 
-			service.insert(attributeFirstname);
-			service.insert(attributeLastname);
-			service.insert(attributeBirthdate);
-			service.insert(attributeKeycloakId);
+      final Group companys = new Group("COMPANYS", "Companies");
+      companys.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(companys);
 
-			final Person person = new Person(Person.getDefaultCodePrefix()+"USER1", "James Bond");
+      final Group users = new Group("USERS", "Users");
+      users.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(users);
 
-			person.addAttribute(attributeFirstname, 1.0,"Sean");
-			person.addAttribute(attributeLastname, 0.8,"Connery");
-			person.addAttribute(attributeBirthdate, 0.6, LocalDateTime.of(1989, 1, 7, 16, 0));
-			person.addAttribute(attributeKeycloakId, 0.0, "6ea705a3-f523-45a4-aca3-dc22e6c24f4f");
+      final Group settings = new Group("SETTINGS", "Settings");
+      settings.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(settings);
 
-			service.insert(person);
 
-			// create test questions
-			final Question questionFirstname = new Question(Question.getDefaultCodePrefix() + "FIRSTNAME", "Firstname",
-					attributeFirstname);
-			final Question questionLastname = new Question(Question.getDefaultCodePrefix() + "LASTNAME", "Lastname",
-					attributeLastname);
-			final Question questionBirthdate = new Question(Question.getDefaultCodePrefix() + "BIRTHDATE", "Birthdate",
-					attributeBirthdate);
 
-			service.insert(questionFirstname);
-			service.insert(questionLastname);
-			service.insert(questionBirthdate);
+      final AttributeLink linkAttribute = new AttributeLink("LNK_CORE", "Parent");
+      service.insert(linkAttribute);
 
-			// Now ask the question!
+      root.addTarget(dashboard, linkAttribute, 1.0);
+      dashboard.addTarget(driverView, linkAttribute, 1.0);
+      dashboard.addTarget(ownerView, linkAttribute, 0.8);
+      root.addTarget(loads, linkAttribute, 0.2);
+      root.addTarget(contacts, linkAttribute, 1.0);
+      contacts.addTarget(people, linkAttribute, 0.8);
+      contacts.addTarget(companys, linkAttribute, 0.8);
+      contacts.addTarget(users, linkAttribute, 0.2);
+      root.addTarget(settings, linkAttribute, 0.2);
+      service.update(dashboard);
+      service.update(root);
 
-			final Ask askFirstname = new Ask(questionFirstname, person, person);
-			final Ask askLastname = new Ask(questionLastname, person, person);
-			final Ask askBirthdate = new Ask(questionBirthdate, person, person);
+      // Adding Live View Child items
+      final Group available = new Group("AVAILABLE", "Available");
+      available.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(available);
 
-			service.insert(askFirstname);
-			service.insert(askLastname);
-			service.insert(askBirthdate);
 
-			final Answer answerFirstname = new Answer(askFirstname, "Bob");
-			final Answer answerLastname = new Answer(askLastname, "Console");
-			final Answer answerBirthdate = new Answer(askBirthdate, "1989-01-07T16:00:00");
+      // Adding Live View Child items
+      final Group pending = new Group("PENDING", "Pending");
+      pending.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(pending);
 
-			person.addAnswer(answerFirstname, 1.0);
-			person.addAnswer(answerLastname, 1.0);
-			person.addAnswer(answerBirthdate, 1.0);
+      final Group quote = new Group("QUOTE", "Quote");
+      quote.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(quote);
 
-			askFirstname.add(answerFirstname);
-			askLastname.add(answerLastname);
-			askBirthdate.add(answerBirthdate);
 
-			service.update(askFirstname);
-			service.update(askLastname);
-			service.update(askBirthdate);
+      final Group accepted = new Group("ACCEPTED", "Accepted");
+      accepted.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(accepted);
 
-			service.update(person);
+      final Group dispatched = new Group("DISPATCHED", "Dispatched");
+      dispatched.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(dispatched);
 
-			final Question question = service.findQuestionByCode(Question.getDefaultCodePrefix() + "FIRSTNAME");
-			System.out.println(question);
+      final Group intransit = new Group("IN-TRANSIT", "In-Transit");
+      intransit.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(intransit);
 
-			final List<Ask> asks = service.findAsksByTargetBaseEntityId(person.getId());
-			System.out.println(asks);
+      final Group atdestination = new Group("AT-DESTINATION", "At-Destination");
+      atdestination.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(atdestination);
 
-		} catch (final BadDataException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
+      final Group delivered = new Group("DELIVERED", "Delivered");
+      delivered.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(delivered);
 
-	}
+      driverView.addTarget(available, linkAttribute, 1.0);
+      driverView.addTarget(quote, linkAttribute, 1.0);
+      driverView.addTarget(accepted, linkAttribute, 1.0);
+      driverView.addTarget(dispatched, linkAttribute, 1.0);
+      driverView.addTarget(intransit, linkAttribute, 1.0);
+      driverView.addTarget(atdestination, linkAttribute, 1.0);
+      driverView.addTarget(delivered, linkAttribute, 1.0);
+      service.update(driverView);
+
+      ownerView.addTarget(pending, linkAttribute, 1.0);
+      ownerView.addTarget(quote, linkAttribute, 1.0);
+      ownerView.addTarget(accepted, linkAttribute, 1.0);
+      ownerView.addTarget(dispatched, linkAttribute, 1.0);
+      ownerView.addTarget(intransit, linkAttribute, 1.0);
+      ownerView.addTarget(atdestination, linkAttribute, 1.0);
+      ownerView.addTarget(delivered, linkAttribute, 1.0);
+      service.update(ownerView);
+
+      // contacts.addTarget(, linkAttribute, weight);
+
+      // Adding Settings items
+      final Group yourDetils = new Group("YOUR_DETAILS", "Your-Details");
+      yourDetils.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(yourDetils);
+
+      final Group loadTypes = new Group("LOAD_TYPES", "Load-Types");
+      loadTypes.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(loadTypes);
+
+      final Group truckSpec = new Group("TRUCK_SPECIFICATION", "Truck-Specification");
+      truckSpec.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(truckSpec);
+
+      final Group documents = new Group("DOCUMENTS", "Documents");
+      documents.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(documents);
+
+      final Group updatePwd = new Group("UPDATE_PASSWORD", "Update-Password");
+      updatePwd.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(updatePwd);
+
+      final Group paymentDetails = new Group("PAYMENT_DETAILS", "Payment-Details");
+      paymentDetails.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(paymentDetails);
+
+      settings.addTarget(yourDetils, linkAttribute, 1.0);
+      settings.addTarget(loadTypes, linkAttribute, 1.0);
+      settings.addTarget(truckSpec, linkAttribute, 1.0);
+      settings.addTarget(documents, linkAttribute, 1.0);
+      settings.addTarget(updatePwd, linkAttribute, 1.0);
+      settings.addTarget(paymentDetails, linkAttribute, 1.0);
+      service.update(settings);
+
+
+      // Adding Loads child item
+      final Group viewLoads = new Group("VIEW_LOADS", "View-Loads");
+      viewLoads.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(viewLoads);
+
+      final Group postLoads = new Group("POST_LOADS", "Post-Loads");
+      postLoads.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(postLoads);
+
+      loads.addTarget(viewLoads, linkAttribute, 1.0);
+      loads.addTarget(postLoads, linkAttribute, 1.0);
+      service.update(loads);
+
+      // Adding Users child item
+      final Group admin = new Group("ADMIN", "Admin");
+      admin.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(admin);
+
+      final Group driver = new Group("DRIVER", "Pacific-Driver");
+      driver.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(driver);
+
+      final Group loadOwner = new Group("LOAD_OWNER", "Load-Owner");
+      loadOwner.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(loadOwner);
+
+      users.addTarget(admin, linkAttribute, 1.0);
+      users.addTarget(driver, linkAttribute, 1.0);
+      users.addTarget(loadOwner, linkAttribute, 1.0);
+      service.update(users);
+
+
+      // Adding Transport Company child item
+      final Group aurizon = new Group("AURIZON", "Aurizon");
+      aurizon.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(aurizon);
+
+      final Group pacificNational = new Group("PACIFIC_NATIONAL", "Pacific-National");
+      pacificNational.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(pacificNational);
+
+      final Group linFox = new Group("LINFOX", "linfox");
+      linFox.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(linFox);
+
+      final Group sctLogistics = new Group("SCT_LOGISTICS", "SCT-Logistics");
+      sctLogistics.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(sctLogistics);
+
+      final Group glenGroup = new Group("GLEN_CAMERON_GROUP", "Glen-Cameron-Group");
+      glenGroup.addAttribute(attributeImageUrl, 1.0, "dir-ico");
+      service.insert(glenGroup);
+
+      companys.addTarget(aurizon, linkAttribute, 1.0);
+      companys.addTarget(pacificNational, linkAttribute, 1.0);
+      companys.addTarget(linFox, linkAttribute, 1.0);
+      companys.addTarget(sctLogistics, linkAttribute, 1.0);
+      companys.addTarget(glenGroup, linkAttribute, 1.0);
+      service.update(companys);
+
+      // check if groups exist
+      final List<Group> parentGroupList = new ArrayList<Group>();
+      parentGroupList.add(contacts);
+      parentGroupList.add(users);
+
+      // try {
+      // service.importKeycloakUsers(parentGroupList, linkAttribute);
+      // } catch (Exception e) {
+      // System.out.println("Unable to load in Keycloak Users");
+      // }
+
+      final Attribute attributeFirstname =
+          new AttributeText(AttributeText.getDefaultCodePrefix() + "FIRSTNAME", "Firstname");
+      final Attribute attributeLastname =
+          new AttributeText(AttributeText.getDefaultCodePrefix() + "LASTNAME", "Lastname");
+
+      // Attribute attributeFirstname = service.findAttributeByCode("PRI_FIRSTNAME");
+      // Attribute attributeLastname = service.findAttributeByCode("PRI_LASTNAME");
+      final Attribute attributeBirthdate = new AttributeDateTime(
+          AttributeText.getDefaultCodePrefix() + "BIRTHDATE", "Date of Birth");
+      final Attribute attributeKeycloakId =
+          new AttributeText(AttributeText.getDefaultCodePrefix() + "KEYCLOAK_ID", "Keycloak ID");
+
+      service.insert(attributeFirstname);
+      service.insert(attributeLastname);
+      service.insert(attributeBirthdate);
+      service.insert(attributeKeycloakId);
+
+      final Person person = new Person(Person.getDefaultCodePrefix() + "USER1", "James Bond");
+
+      person.addAttribute(attributeFirstname, 1.0, "Sean");
+      person.addAttribute(attributeLastname, 0.8, "Connery");
+      person.addAttribute(attributeBirthdate, 0.6, LocalDateTime.of(1989, 1, 7, 16, 0));
+      person.addAttribute(attributeKeycloakId, 0.0, "6ea705a3-f523-45a4-aca3-dc22e6c24f4f");
+
+      service.insert(person);
+
+      // create test questions
+      final Question questionFirstname = new Question(Question.getDefaultCodePrefix() + "FIRSTNAME",
+          "Firstname", attributeFirstname);
+      final Question questionLastname =
+          new Question(Question.getDefaultCodePrefix() + "LASTNAME", "Lastname", attributeLastname);
+      final Question questionBirthdate = new Question(Question.getDefaultCodePrefix() + "BIRTHDATE",
+          "Birthdate", attributeBirthdate);
+
+      service.insert(questionFirstname);
+      service.insert(questionLastname);
+      service.insert(questionBirthdate);
+
+      // Now ask the question!
+
+      final Ask askFirstname = new Ask(questionFirstname, person, person);
+      final Ask askLastname = new Ask(questionLastname, person, person);
+      final Ask askBirthdate = new Ask(questionBirthdate, person, person);
+
+      service.insert(askFirstname);
+      service.insert(askLastname);
+      service.insert(askBirthdate);
+
+      final Answer answerFirstname = new Answer(askFirstname, "Bob");
+      final Answer answerLastname = new Answer(askLastname, "Console");
+      final Answer answerBirthdate = new Answer(askBirthdate, "1989-01-07T16:00:00");
+
+      person.addAnswer(answerFirstname, 1.0);
+      person.addAnswer(answerLastname, 1.0);
+      person.addAnswer(answerBirthdate, 1.0);
+
+      askFirstname.add(answerFirstname);
+      askLastname.add(answerLastname);
+      askBirthdate.add(answerBirthdate);
+
+      service.update(askFirstname);
+      service.update(askLastname);
+      service.update(askBirthdate);
+
+      service.update(person);
+
+      final Question question =
+          service.findQuestionByCode(Question.getDefaultCodePrefix() + "FIRSTNAME");
+      System.out.println(question);
+
+      final List<Ask> asks = service.findAsksByTargetBaseEntityId(person.getId());
+      System.out.println(asks);
+
+    } catch (final BadDataException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
+  }
 
 }
