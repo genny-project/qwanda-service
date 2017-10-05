@@ -147,14 +147,14 @@ public class StartupService {
       driverView.addTarget(delivered, linkAttribute, 1.0);
       service.update(driverView);
 
-      // ownerView.addTarget(pending, linkAttribute, 1.0);
-      // ownerView.addTarget(quote, linkAttribute, 1.0);
-      // ownerView.addTarget(accepted, linkAttribute, 1.0);
-      // ownerView.addTarget(dispatched, linkAttribute, 1.0);
-      // ownerView.addTarget(intransit, linkAttribute, 1.0);
-      // ownerView.addTarget(atdestination, linkAttribute, 1.0);
-      // ownerView.addTarget(delivered, linkAttribute, 1.0);
-      // service.update(ownerView);
+      ownerView.addTarget(pending, linkAttribute, 1.0);
+      ownerView.addTarget(quote, linkAttribute, 1.0);
+      ownerView.addTarget(accepted, linkAttribute, 1.0);
+      ownerView.addTarget(dispatched, linkAttribute, 1.0);
+      ownerView.addTarget(intransit, linkAttribute, 1.0);
+      ownerView.addTarget(atdestination, linkAttribute, 1.0);
+      ownerView.addTarget(delivered, linkAttribute, 1.0);
+      service.update(ownerView);
 
       // contacts.addTarget(, linkAttribute, weight);
 
