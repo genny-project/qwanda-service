@@ -21,7 +21,7 @@ ADD src/main/resources/META-INF/load.sql /src/main/resources/META-INF/
 RUN mkdir /realm
 ADD realm /opt/realm
 ADD docker-entrypoint.sh /docker-entrypoint.sh
-
+ADD StoredCredential /root/.credentials/sheets.googleapis.com-java-quickstart/StoredCredential
 WORKDIR /
 
 EXPOSE 8080

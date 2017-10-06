@@ -18,6 +18,9 @@ import life.genny.qwanda.entity.BaseEntity;
 import life.genny.qwanda.entity.Group;
 import life.genny.qwanda.entity.Person;
 import life.genny.qwanda.exception.BadDataException;
+import life.genny.qwandautils.GennySheets;
+import static java.lang.System.out;
+import java.io.IOException;;
 
 /**
  * This Service bean demonstrate various JPA manipulations of {@link BaseEntity}
@@ -31,18 +34,28 @@ public class StartupService {
   @Inject
   private BaseEntityService service;
 
+  private static final String CLIENT_SECRET = System.getenv("GOOGLE_CLIENT_SECRET");
+  private static final String SHEETID = System.getenv("GOOGLE_SHEETID");
+  
   @PostConstruct
   public void init() {
     try {
       // create a users directory and a contacts directory
       // and link these users to each
-
-      // create a group attribute (This is because of a json/hibernate lazy issue)
+      out.println("###############################Google Sheets#############################################");
+      
+      try {
+        GennySheets.main();
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
+      
+      out.println("#######################################################################################");
 
       final Attribute attributeImageUrl =
           new AttributeText(AttributeText.getDefaultCodePrefix() + "IMAGE_URL", "Image Url");
       service.insert(attributeImageUrl);
-
 
       final Group root = new Group("ROOT", "Root");
       root.addAttribute(attributeImageUrl, 1.0, "dir-ico");
@@ -64,7 +77,6 @@ public class StartupService {
       loads.addAttribute(attributeImageUrl, 1.0, "dir-ico");
       service.insert(loads);
 
-
       final Group contacts = new Group("CONTACTS", "Contacts");
       contacts.addAttribute(attributeImageUrl, 1.0, "dir-ico");
       service.insert(contacts);
@@ -84,8 +96,6 @@ public class StartupService {
       final Group settings = new Group("SETTINGS", "Settings");
       settings.addAttribute(attributeImageUrl, 1.0, "dir-ico");
       service.insert(settings);
-
-
 
       final AttributeLink linkAttribute = new AttributeLink("LNK_CORE", "Parent");
       service.insert(linkAttribute);
@@ -107,7 +117,6 @@ public class StartupService {
       available.addAttribute(attributeImageUrl, 1.0, "dir-ico");
       service.insert(available);
 
-
       // Adding Live View Child items
       final Group pending = new Group("PENDING", "Pending");
       pending.addAttribute(attributeImageUrl, 1.0, "dir-ico");
@@ -116,7 +125,6 @@ public class StartupService {
       final Group quote = new Group("QUOTE", "Quote");
       quote.addAttribute(attributeImageUrl, 1.0, "dir-ico");
       service.insert(quote);
-
 
       final Group accepted = new Group("ACCEPTED", "Accepted");
       accepted.addAttribute(attributeImageUrl, 1.0, "dir-ico");
@@ -191,7 +199,6 @@ public class StartupService {
       settings.addTarget(paymentDetails, linkAttribute, 1.0);
       service.update(settings);
 
-
       // Adding Loads child item
       final Group viewLoads = new Group("VIEW_LOADS", "View-Loads");
       viewLoads.addAttribute(attributeImageUrl, 1.0, "dir-ico");
@@ -222,7 +229,6 @@ public class StartupService {
       users.addTarget(driver, linkAttribute, 1.0);
       users.addTarget(loadOwner, linkAttribute, 1.0);
       service.update(users);
-
 
       // Adding Transport Company child item
       final Group aurizon = new Group("AURIZON", "Aurizon");

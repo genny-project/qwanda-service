@@ -425,11 +425,33 @@
 
 
 	<dependencies>
+		
+		<dependency>
+			<groupId>life.genny</groupId>
+			<artifactId>qwanda-utils</artifactId>
+			<version>0.1</version>
+		</dependency>
 		<dependency>
 			<groupId>life.genny</groupId>
 			<artifactId>qwanda</artifactId>
 			<version>${qwanda.version}</version>
 			<exclusions>
+				<exclusion>
+					<artifactId>jackson-annotations</artifactId>
+					<groupId>com.fasterxml.jackson.core</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jackson-databind</artifactId>
+					<groupId>com.fasterxml.jackson.core</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jackson-datatype-jsr310</artifactId>
+					<groupId>com.fasterxml.jackson.datatype</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>dom4j</artifactId>
+					<groupId>dom4j</groupId>
+				</exclusion>
 				<exclusion>
 					<groupId>dom4j</groupId>
 					<artifactId>dom4j</artifactId>
@@ -607,6 +629,21 @@
 			<version>1.22.0</version>
 		</dependency>
 		<dependency>
+			<groupId>com.google.oauth-client</groupId>
+			<artifactId>google-oauth-client-jetty</artifactId>
+			<version>1.22.0</version>
+		</dependency> 
+		<dependency>
+			<groupId>com.google.apis</groupId>
+			<artifactId>google-api-services-sheets</artifactId>
+			<version>v4-rev473-1.22.0</version>
+		</dependency>	
+		<!-- <dependency>
+			<groupId>com.google.api-client</groupId>
+			<artifactId>google-api-client</artifactId>
+			<version>1.22.0</version>
+		</dependency>
+		<dependency>
 			<groupId>com.google.apis</groupId>
 			<artifactId>google-api-services-oauth2</artifactId>
 			<version>v2-rev75-1.19.0</version>
@@ -621,12 +658,12 @@
 			<artifactId>google-oauth-client-jetty</artifactId>
 			<version>${project.oauth.version}</version>
 		</dependency>
-		<!-- https://mvnrepository.com/artifact/com.google.apis/google-api-services-sheets -->
+		https://mvnrepository.com/artifact/com.google.apis/google-api-services-sheets
 		<dependency>
 			<groupId>com.google.apis</groupId>
 			<artifactId>google-api-services-sheets</artifactId>
 			<version>v4-rev473-1.22.0</version>
-		</dependency>
+		</dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-multipart-provider -->
 		<!-- <dependency> <groupId>org.jboss.resteasy</groupId> <artifactId>resteasy-multipart-provider</artifactId> 
 			<version>3.1.2.Final</version> </dependency> -->

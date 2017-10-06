@@ -2,7 +2,6 @@
 package org.wildfly.swarm.examples.keycloak;
 
 import java.util.Map;
-
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ClassLoaderAsset;
 import org.wildfly.swarm.Swarm;
@@ -13,13 +12,12 @@ import org.wildfly.swarm.jaxrs.JAXRSArchive;
 import org.wildfly.swarm.keycloak.Secured;
 import org.wildfly.swarm.logging.LoggingFraction;
 import org.wildfly.swarm.swagger.SwaggerArchive;
-
 import life.genny.qwanda.CoreEntity;
 import life.genny.qwanda.attribute.Attribute;
 import life.genny.qwanda.entity.BaseEntity;
 import life.genny.qwanda.exception.BadDataException;
 import life.genny.qwanda.validation.Validation;
-
+import life.genny.qwandautils.GennySheets;
 
 
 /**
@@ -63,14 +61,14 @@ public class Main {
 
         deployment.addPackage(Setup.class.getPackage());
         deployment.addPackage(BaseEntityService.class.getPackage());
-
-
+        
+        
         deployment.addPackage(Validation.class.getPackage());
         deployment.addPackage(BadDataException.class.getPackage());
         deployment.addPackage(Attribute.class.getPackage());
         deployment.addPackage(BaseEntity.class.getPackage());
         deployment.addPackage(CoreEntity.class.getPackage());
-
+        deployment.addPackage(GennySheets.class.getPackage());
         deployment.as(Secured.class);
         
         deployment.addAsWebInfResource(new ClassLoaderAsset("META-INF/persistence.xml", Main.class.getClassLoader()), "classes/META-INF/persistence.xml");
