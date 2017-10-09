@@ -266,20 +266,58 @@ public class StartupService {
           AttributeText.getDefaultCodePrefix() + "BIRTHDATE", "Date of Birth");
       final Attribute attributeKeycloakId =
           new AttributeText(AttributeText.getDefaultCodePrefix() + "KEYCLOAK_ID", "Keycloak ID");
+      
+      final Attribute attributeEmail =
+              new AttributeText(AttributeText.getDefaultCodePrefix() + "EMAIL", "Email");
+      final Attribute attributeMobileNo =
+              new AttributeText(AttributeText.getDefaultCodePrefix() + "MOBILE_NO", "Mobile-No");
+      
+      final Attribute attributeRole =  new AttributeText(AttributeText.getDefaultCodePrefix() + "ROLE", "Role");
 
       service.insert(attributeFirstname);
       service.insert(attributeLastname);
       service.insert(attributeBirthdate);
       service.insert(attributeKeycloakId);
+      service.insert(attributeEmail);
+      service.insert(attributeMobileNo);
+      service.insert(attributeRole);
 
       final Person person = new Person(Person.getDefaultCodePrefix() + "USER1", "James Bond");
 
       person.addAttribute(attributeFirstname, 1.0, "Sean");
       person.addAttribute(attributeLastname, 0.8, "Connery");
       person.addAttribute(attributeBirthdate, 0.6, LocalDateTime.of(1989, 1, 7, 16, 0));
+      person.addAttribute(attributeEmail, 0.5, "sean@gmail.com");
+      person.addAttribute(attributeMobileNo, 0.8, "0412345678");
+      person.addAttribute(attributeRole, 0.8, "Driver");
       person.addAttribute(attributeKeycloakId, 0.0, "6ea705a3-f523-45a4-aca3-dc22e6c24f4f");
-
       service.insert(person);
+      
+      final Person person2 = new Person(Person.getDefaultCodePrefix() + "USER2", "Connor");
+
+      person2.addAttribute(attributeFirstname, 1.0, "Connor");
+      person2.addAttribute(attributeLastname, 0.8, "Pirie");
+      person2.addAttribute(attributeBirthdate, 0.6, LocalDateTime.of(1989, 1, 7, 16, 0));
+      person2.addAttribute(attributeEmail, 0.5, "conor@gmail.com");
+      person2.addAttribute(attributeMobileNo, 0.8, "0412345678");
+      person2.addAttribute(attributeRole, 0.8, "Load-Owner");
+      person2.addAttribute(attributeKeycloakId, 0.0, "6ea705a3-f523-45a4-aca3-dc22e6c24f4f");
+
+      service.insert(person2);
+      
+      final Person person3 = new Person(Person.getDefaultCodePrefix() + "USER3", "Adam");
+
+      person3.addAttribute(attributeFirstname, 1.0, "Adam");
+      person3.addAttribute(attributeLastname, 0.8, "Crow");
+      person3.addAttribute(attributeBirthdate, 0.6, LocalDateTime.of(1989, 1, 7, 16, 0));
+      person3.addAttribute(attributeEmail, 0.5, "adam.crow@gmail.com");
+      person3.addAttribute(attributeMobileNo, 0.8, "0412345678");
+      person3.addAttribute(attributeRole, 0.8, "Driver-Manager");
+      person3.addAttribute(attributeKeycloakId, 0.0, "6ea705a3-f523-45a4-aca3-dc22e6c24f4f");
+
+      service.insert(person3);
+      
+      
 
       // create test questions
       final Question questionFirstname = new Question(Question.getDefaultCodePrefix() + "FIRSTNAME",
