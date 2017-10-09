@@ -5,6 +5,6 @@
    
     <context-param>
         <param-name>keycloak.config.resolver</param-name>
-        <param-value>org.wildfly.swarm.examples.keycloak.PathBasedKeycloakConfigResolver</param-value>
+        <param-value>org.wildfly.swarm.examples.keycloak.keycloak.PathBasedKeycloakConfigResolver</param-value>
     </context-param>
 </web-app>

@@ -17,10 +17,7 @@ import life.genny.qwanda.attribute.AttributeText;
 import life.genny.qwanda.entity.BaseEntity;
 import life.genny.qwanda.entity.Group;
 import life.genny.qwanda.entity.Person;
-import life.genny.qwanda.exception.BadDataException;
-import life.genny.qwandautils.GennySheets;
-import static java.lang.System.out;
-import java.io.IOException;;
+import life.genny.qwanda.exception.BadDataException;;
 
 /**
  * This Service bean demonstrate various JPA manipulations of {@link BaseEntity}
@@ -34,24 +31,13 @@ public class StartupService {
   @Inject
   private BaseEntityService service;
 
-  private static final String CLIENT_SECRET = System.getenv("GOOGLE_CLIENT_SECRET");
-  private static final String SHEETID = System.getenv("GOOGLE_SHEETID");
-  
+
   @PostConstruct
   public void init() {
     try {
       // create a users directory and a contacts directory
       // and link these users to each
-      out.println("###############################Google Sheets#############################################");
-      
-      try {
-        GennySheets.main();
-      } catch (IOException e) {
-        // TODO Auto-generated catch block
-        e.printStackTrace();
-      }
-      
-      out.println("#######################################################################################");
+
 
       final Attribute attributeImageUrl =
           new AttributeText(AttributeText.getDefaultCodePrefix() + "IMAGE_URL", "Image Url");

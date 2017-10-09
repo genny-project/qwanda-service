@@ -18,7 +18,7 @@
 	<properties>
 		<qwanda.version>0.5.3</qwanda.version>
 
-		<version.wildfly-swarm>2017.7.0-SNAPSHOT</version.wildfly-swarm>
+		<version.wildfly-swarm>2017.8.0-SNAPSHOT</version.wildfly-swarm>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -428,11 +428,6 @@
 		
 		<dependency>
 			<groupId>life.genny</groupId>
-			<artifactId>qwanda-utils</artifactId>
-			<version>0.1</version>
-		</dependency>
-		<dependency>
-			<groupId>life.genny</groupId>
 			<artifactId>qwanda</artifactId>
 			<version>${qwanda.version}</version>
 			<exclusions>
@@ -598,17 +593,29 @@
 			<version>3.1.2.Final</version> </dependency> -->
 		<dependency>
 			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-core</artifactId>
+			<artifactId>keycloak-adapter-core</artifactId>
 			<version>${keycloak-core.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-adapter-spi</artifactId>
+			<version>${keycloak-core.version}</version>
+			<scope>provided</scope>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/org.keycloak/keycloak-admin-client -->
+		<!-- Contains KeycloakPrincipal -->
+		<dependency>
+			<groupId>org.keycloak</groupId>
+			<artifactId>keycloak-core</artifactId>
+			<version>${keycloak-core.version}</version>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>org.keycloak</groupId>
 			<artifactId>keycloak-admin-client</artifactId>
 			<version>${keycloak-core.version}</version>
-		</dependency>
-		<!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-client -->
+		</dependency>		<!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-client -->
 		<!-- <dependency> <groupId>org.jboss.resteasy</groupId> <artifactId>resteasy-client</artifactId> 
 			<version>3.1.2.Final</version> </dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.apache.httpcomponents/httpclient -->
