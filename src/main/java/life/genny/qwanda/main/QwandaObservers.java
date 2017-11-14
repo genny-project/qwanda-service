@@ -1,4 +1,4 @@
-package org.wildfly.swarm.examples.keycloak;
+package life.genny.qwanda.main;
 
 import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.event.Observes;
@@ -6,9 +6,9 @@ import javax.enterprise.event.TransactionPhase;
 import javax.inject.Inject;
 
 import org.jboss.logging.Logger;
-import org.wildfly.swarm.examples.keycloak.service.BaseEntityService;
 
 import life.genny.qwanda.entity.BaseEntity;
+import life.genny.qwanda.service.BaseEntityService;
 
 /**
  * This CDI bean observes transactional events.

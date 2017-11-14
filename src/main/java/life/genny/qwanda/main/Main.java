@@ -1,21 +1,31 @@
 
-package org.wildfly.swarm.examples.keycloak;
+package life.genny.qwanda.main;
+
+import java.util.Map;
 
 import org.jboss.shrinkwrap.api.ShrinkWrap;
 import org.jboss.shrinkwrap.api.asset.ClassLoaderAsset;
 import org.wildfly.swarm.Swarm;
 import org.wildfly.swarm.datasources.DatasourcesFraction;
-import org.wildfly.swarm.examples.keycloak.models.Setup;
-import org.wildfly.swarm.examples.keycloak.service.BaseEntityService;
 import org.wildfly.swarm.jaxrs.JAXRSArchive;
 import org.wildfly.swarm.keycloak.Secured;
 import org.wildfly.swarm.logging.LoggingFraction;
 import org.wildfly.swarm.swagger.SwaggerArchive;
-import java.util.Map;
+
+import life.genny.qwanda.AnswerLink;
 import life.genny.qwanda.CoreEntity;
 import life.genny.qwanda.attribute.Attribute;
+import life.genny.qwanda.converter.ValidationListConverter;
+import life.genny.qwanda.datatype.DataType;
+import life.genny.qwanda.endpoint.QwandaEndpoint;
 import life.genny.qwanda.entity.BaseEntity;
 import life.genny.qwanda.exception.BadDataException;
+import life.genny.qwanda.message.QMessage;
+import life.genny.qwanda.model.Setup;
+import life.genny.qwanda.providers.CORSFilter;
+import life.genny.qwanda.rule.Rule;
+import life.genny.qwanda.service.BaseEntityService;
+import life.genny.qwanda.util.PersistenceHelper;
 import life.genny.qwanda.validation.Validation;
 
 
@@ -61,6 +71,9 @@ public class Main {
 
     deployment.addPackage(Setup.class.getPackage());
     deployment.addPackage(BaseEntityService.class.getPackage());
+    deployment.addPackage(QwandaEndpoint.class.getPackage());
+    deployment.addPackage(CORSFilter.class.getPackage());
+    deployment.addPackage(PersistenceHelper.class.getPackage());
 
 
     deployment.addPackage(Validation.class.getPackage());
@@ -68,15 +81,20 @@ public class Main {
     deployment.addPackage(Attribute.class.getPackage());
     deployment.addPackage(BaseEntity.class.getPackage());
     deployment.addPackage(CoreEntity.class.getPackage());
+    deployment.addPackage(AnswerLink.class.getPackage());
+    deployment.addPackage(ValidationListConverter.class.getPackage());
+    deployment.addPackage(Rule.class.getPackage());
+    deployment.addPackage(QMessage.class.getPackage());
+    deployment.addPackage(DataType.class.getPackage());
     deployment.as(Secured.class);
-
+  
     deployment.addAsWebInfResource(
         new ClassLoaderAsset("META-INF/persistence.xml", Main.class.getClassLoader()),
         "classes/META-INF/persistence.xml");
 
 
     // Tell swagger where our resources are
-    archive.setResourcePackages("org.wildfly.swarm.examples.keycloak");
+    archive.setResourcePackages("life.genny.qwanda.main");
 
     deployment.addAllDependencies();
     swarm.fraction(LoggingFraction.createDefaultLoggingFraction()).start().deploy(deployment);

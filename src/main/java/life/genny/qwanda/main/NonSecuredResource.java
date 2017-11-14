@@ -1,4 +1,4 @@
-package org.wildfly.swarm.examples.keycloak;
+package life.genny.qwanda.main;
 
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;

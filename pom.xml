@@ -8,7 +8,7 @@
 
 	<groupId>life.genny</groupId>
 	<artifactId>qwanda-service</artifactId>
-	<version>0.5</version>
+	<version>0.6</version>
 
 	<name>Qwanda Secured Keycloak Service</name>
 	<description>Qwanda Secured Keycloak Service</description>
@@ -16,9 +16,11 @@
 	<packaging>war</packaging>
 
 	<properties>
-		<qwanda.version>0.5.3</qwanda.version>
+		<qwanda.version>0.5.5</qwanda.version>
+		<qwanda-utils.version>0.4</qwanda-utils.version>
+		<qwanda-services.version>0.0.1-SNAPSHOT</qwanda-services.version>
 
-		<version.wildfly-swarm>2017.8.0-SNAPSHOT</version.wildfly-swarm>
+		<version.wildfly-swarm>2017.11.0-SNAPSHOT</version.wildfly-swarm>
 
 		<maven.compiler.source>1.8</maven.compiler.source>
 		<maven.compiler.target>1.8</maven.compiler.target>
@@ -41,12 +43,13 @@
 		<project.http.version>1.19.0</project.http.version>
 		<project.oauth.version>1.19.0</project.oauth.version>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<version.jboss.bom>10.1.0.Final</version.jboss.bom>
+		<version.jboss.bom>11.0.0.Final</version.jboss.bom>
 		<drools.version>6.4.0.Final</drools.version>
 		<jbpm.version>6.4.0.Final</jbpm.version>
-				<keycloak-core.version>3.2.1.Final</keycloak-core.version>
+		<keycloak-core.version>3.2.1.Final</keycloak-core.version>
 		<keycloak-adapter-core.version>3.2.1.Final</keycloak-adapter-core.version>
-		
+		<version.swagger>1.5.16</version.swagger>
+
 
 	</properties>
 	<repositories>
@@ -147,7 +150,7 @@
 	</dependencyManagement>
 
 	<build>
-	<finalName>qwanda-service</finalName>
+		<finalName>qwanda-service</finalName>
 		<resources>
 			<resource>
 				<directory>src/main/resources</directory>
@@ -227,7 +230,7 @@
 				<groupId>org.wildfly.swarm</groupId>
 				<artifactId>wildfly-swarm-plugin</artifactId>
 				<configuration>
-					<mainClass>org.wildfly.swarm.examples.keycloak.Main</mainClass>
+					<mainClass>life.genny.qwanda.main.Main</mainClass>
 					<bundleDependencies>true</bundleDependencies>
 					<properties>
 						<swarm.bind.address>0.0.0.0</swarm.bind.address>
@@ -425,7 +428,18 @@
 
 
 	<dependencies>
-		
+		<dependency>
+			<groupId>life.genny</groupId>
+			<artifactId>qwanda-services</artifactId>
+			<version>${qwanda-services.version}</version>
+		</dependency>
+
+		<dependency>
+			<groupId>life.genny</groupId>
+			<artifactId>qwanda-utils</artifactId>
+			<version>${qwanda-utils.version}</version>
+		</dependency>
+
 		<dependency>
 			<groupId>life.genny</groupId>
 			<artifactId>qwanda</artifactId>
@@ -446,10 +460,6 @@
 				<exclusion>
 					<artifactId>dom4j</artifactId>
 					<groupId>dom4j</groupId>
-				</exclusion>
-				<exclusion>
-					<groupId>dom4j</groupId>
-					<artifactId>dom4j</artifactId>
 				</exclusion>
 			</exclusions>
 		</dependency>
@@ -500,7 +510,7 @@
 			<artifactId>jpa</artifactId>
 			<version>${version.wildfly-swarm}</version>
 		</dependency>
- 		<dependency>
+		<dependency>
 			<groupId>org.wildfly.swarm</groupId>
 			<artifactId>ejb</artifactId>
 			<version>${version.wildfly-swarm}</version>
@@ -543,8 +553,8 @@
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.hibernate.javax.persistence/hibernate-jpa-2.1-api -->
 
-		
-  		<dependency>
+
+		<dependency>
 			<groupId>org.hibernate.javax.persistence</groupId>
 			<artifactId>hibernate-jpa-2.1-api</artifactId>
 			<exclusions>
@@ -553,9 +563,9 @@
 					<artifactId>dom4j</artifactId>
 				</exclusion>
 			</exclusions>
- 			<scope>provided</scope> 
-		</dependency> 
- 	<dependency>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
 			<groupId>javax.enterprise</groupId>
 			<artifactId>cdi-api</artifactId>
 			<version>1.2</version>
@@ -589,28 +599,6 @@
 			</version>
 
 		</dependency>
-		<!-- <dependency> <groupId>org.jboss.resteasy</groupId> <artifactId>resteasy-jaxrs</artifactId> 
-			<version>3.1.2.Final</version> </dependency> -->
-		<dependency>
-			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-adapter-core</artifactId>
-			<version>${keycloak-core.version}</version>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-adapter-spi</artifactId>
-			<version>${keycloak-core.version}</version>
-			<scope>provided</scope>
-		</dependency>
-
-		<!-- Contains KeycloakPrincipal -->
-		<dependency>
-			<groupId>org.keycloak</groupId>
-			<artifactId>keycloak-core</artifactId>
-			<version>${keycloak-core.version}</version>
-			<scope>provided</scope>
-		</dependency>
 		<dependency>
 			<groupId>org.keycloak</groupId>
 			<artifactId>keycloak-admin-client</artifactId>
@@ -639,38 +627,21 @@
 			<groupId>com.google.oauth-client</groupId>
 			<artifactId>google-oauth-client-jetty</artifactId>
 			<version>1.22.0</version>
-		</dependency> 
+		</dependency>
 		<dependency>
 			<groupId>com.google.apis</groupId>
 			<artifactId>google-api-services-sheets</artifactId>
 			<version>v4-rev473-1.22.0</version>
-		</dependency>	
-		<!-- <dependency>
-			<groupId>com.google.api-client</groupId>
-			<artifactId>google-api-client</artifactId>
-			<version>1.22.0</version>
 		</dependency>
-		<dependency>
-			<groupId>com.google.apis</groupId>
-			<artifactId>google-api-services-oauth2</artifactId>
-			<version>v2-rev75-1.19.0</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.http-client</groupId>
-			<artifactId>google-http-client-jackson2</artifactId>
-			<version>${project.http.version}</version>
-		</dependency>
-		<dependency>
-			<groupId>com.google.oauth-client</groupId>
-			<artifactId>google-oauth-client-jetty</artifactId>
-			<version>${project.oauth.version}</version>
-		</dependency>
-		https://mvnrepository.com/artifact/com.google.apis/google-api-services-sheets
-		<dependency>
-			<groupId>com.google.apis</groupId>
-			<artifactId>google-api-services-sheets</artifactId>
-			<version>v4-rev473-1.22.0</version>
-		</dependency> -->
+		<!-- <dependency> <groupId>com.google.api-client</groupId> <artifactId>google-api-client</artifactId> 
+			<version>1.22.0</version> </dependency> <dependency> <groupId>com.google.apis</groupId> 
+			<artifactId>google-api-services-oauth2</artifactId> <version>v2-rev75-1.19.0</version> 
+			</dependency> <dependency> <groupId>com.google.http-client</groupId> <artifactId>google-http-client-jackson2</artifactId> 
+			<version>${project.http.version}</version> </dependency> <dependency> <groupId>com.google.oauth-client</groupId> 
+			<artifactId>google-oauth-client-jetty</artifactId> <version>${project.oauth.version}</version> 
+			</dependency> https://mvnrepository.com/artifact/com.google.apis/google-api-services-sheets 
+			<dependency> <groupId>com.google.apis</groupId> <artifactId>google-api-services-sheets</artifactId> 
+			<version>v4-rev473-1.22.0</version> </dependency> -->
 		<!-- https://mvnrepository.com/artifact/org.jboss.resteasy/resteasy-multipart-provider -->
 		<!-- <dependency> <groupId>org.jboss.resteasy</groupId> <artifactId>resteasy-multipart-provider</artifactId> 
 			<version>3.1.2.Final</version> </dependency> -->
@@ -778,10 +749,22 @@
 			<artifactId>keycloak-core</artifactId>
 			<version>${keycloak-core.version}</version>
 		</dependency>
+<!-- 		<dependency>
+			<groupId>org.wildfly.swarm</groupId>
+			<artifactId>vertx</artifactId>
+			<version>${version.wildfly-swarm}</version>
 
-	</dependencies>
+		</dependency>
+ -->
+ 		<dependency>
+			<groupId>io.swagger</groupId>
+			<artifactId>swagger-jaxrs</artifactId>
+			<version>${version.swagger}</version>
+		</dependency>
+ 
+ 	</dependencies>
 
-<reporting>
+	<reporting>
 		<plugins>
 			<plugin>
 				<!-- The JXR Plugin generates a cross-reference of the project's sources. -->
